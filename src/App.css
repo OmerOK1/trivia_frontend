@@ -1,6 +1,9 @@
 .App {
   text-align: center;
 }
+body {
+  background-color: #a7d3f9; /* Change to your desired lighter shade of blue */
+}
 
 .App-logo {
   height: 40vmin;
