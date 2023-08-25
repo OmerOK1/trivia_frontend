@@ -1,9 +1,10 @@
+import AddGame from "../AddGame/AddGame";
 
 
 function SinglePlayerSettings(): JSX.Element {
     return (
         <div >
-            <span>Soon to be single player game settings!</span>
+            <AddGame />
         </div>
     );
 };
