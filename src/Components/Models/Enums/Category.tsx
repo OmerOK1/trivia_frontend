@@ -1,4 +1,5 @@
 export enum Category {
+    ANY = "Any Category",
     GENERAL_KNOWLEDGE = "General Knowledge",
     ENTERTAINMENT_BOOKS = "Entertainment Books",
     ENTERTAINMENT_FILM = "Entertainment Film",

@@ -1,4 +1,4 @@
 export enum LayoutEnum {
-    NORMAL = "Normal",
-    LIGHT = "Light"
+    NORMAL = "normal",
+    DARK = "dark"
 }

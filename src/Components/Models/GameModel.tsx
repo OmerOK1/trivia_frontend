@@ -29,6 +29,7 @@ export interface GameModel {
     category?: Category;
     difficulty?: Difficulty;
     questionsPerRound?: number;
+    answerTimeLimit?: number;
     layout?: LayoutEnum;
     url?: string;
 }

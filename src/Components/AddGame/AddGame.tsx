@@ -7,6 +7,7 @@ import { Category } from '../Models/Enums/Category';
 import { Difficulty } from '../Models/Enums/Difficulty';
 import { LayoutEnum } from '../Models/Enums/LayoutEnum';
 import { useState } from 'react';
+import { addGameApi } from '../../WebAPI/UserApi';
 // import { addCompanyApi } from '../../../WebApi/AdminApi';
 // import { ClientType } from '../../../Models/ClientType';
 // import { CompanyModel } from '../../../Models/CompanyModel';
@@ -28,6 +29,8 @@ function AddGame() {
             yup.string().required("please enter difficulty level"),
         questionsPerRound:
             yup.number().integer().min(1).max(10).required("insert amount between 1 - 10"),
+        answerTimeLimit:
+            yup.number().integer(),
         layout:
             yup.string().required()
     });
@@ -37,9 +40,17 @@ function AddGame() {
     const { register, handleSubmit, formState: { errors, isDirty, isValid } } = 
     useForm<GameModel>({ mode: "all", resolver: yupResolver(schema)});
 
-        
-    const addGame = (game: GameModel)=> { //todo: change this ibject to game model
-        console.log(game);
+
+    const addGame = async (game: GameModel)=> { 
+        if (inTimeout) {return;}
+        setInTimeout(true);
+        await addGameApi(game).then((res)=>{
+            console.log("sent: ");
+            console.log(game);
+            console.log("recieved: ");
+            console.log(res.data);
+        })
+        setTimeout(() => setInTimeout(false), 3000);
     }
     
     return (
@@ -59,8 +70,17 @@ function AddGame() {
                 <span className="validation_rules">{errors.questionsPerRound?.message}</span>
                 <br />
 
+                <label htmlFor="answer timer">answer timer</label> 
+                <select {...register("answerTimeLimit")} defaultValue={15} id="answerTimeLimit">
+                <option value={15}>15 seconds</option>
+                <option value={30}>30 seconds</option>
+                <option value={60}>60 seconds</option>
+                </select>
+                <span className="validation_rules">{errors.answerTimeLimit?.message}</span>
+                <br />
+
                 <label htmlFor="category">Category</label>
-                <select {...register("category")} placeholder="category" defaultValue="" id="category"> 
+                <select {...register("category")} defaultValue="ANY" id="category"> 
                 <option value="" disabled>Category</option>
                 {Object.keys(Category).map((key, index) => (
                 <option
@@ -75,7 +95,7 @@ function AddGame() {
                 <br />
 
                 <label htmlFor="difficulty">difficulty</label>
-                <select {...register("difficulty")} placeholder="difficulty" defaultValue="" id="difficulty"> 
+                <select {...register("difficulty")} defaultValue="ANY" id="difficulty"> 
                 <option value="" disabled>difficulty</option>
                 {Object.keys(Difficulty).map((key, index) => (
                 <option
