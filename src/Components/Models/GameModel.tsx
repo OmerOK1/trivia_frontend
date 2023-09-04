@@ -1,6 +1,7 @@
 import { Category } from "./Enums/Category";
 import { Difficulty } from "./Enums/Difficulty";
 import { LayoutEnum } from "./Enums/LayoutEnum";
+import { QuestionModel } from "./QuestionModel";
 
 // export class GameModel{
 //     public id?: number;
@@ -32,4 +33,5 @@ export interface GameModel {
     answerTimeLimit?: number;
     layout?: LayoutEnum;
     url?: string;
+    questions?: QuestionModel[];
 }
