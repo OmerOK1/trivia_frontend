@@ -13,7 +13,7 @@ function GameWelcome(): JSX.Element {
     return (
         <div className="game-welcome-page">
             <h1>Welcome to {gameTitle}!</h1>
-            <CustomLink to="/question">Play Now</CustomLink>
+            <CustomLink to="/game/singleplayer/question">Play Now</CustomLink>
         </div>
     )
 }
