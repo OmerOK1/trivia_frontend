@@ -8,6 +8,8 @@ import { Difficulty } from '../Models/Enums/Difficulty';
 import { LayoutEnum } from '../Models/Enums/LayoutEnum';
 import { useState } from 'react';
 import { addGameApi } from '../../WebAPI/UserApi';
+import store from '../../Redux/Store';
+import { GameActionType, setGameAction, setNextQuestionAction } from '../../Redux/GameState';
 
 function AddGame() {
     
@@ -43,6 +45,10 @@ function AddGame() {
             console.log(game);
             console.log("recieved: ");
             console.log(res.data);
+            store.dispatch(setGameAction(res.data));
+            console.log("state: ")
+            console.log(store.getState().gameReducer);
+            navigate("/game/singleplayer");
         })
         setTimeout(() => setInTimeout(false), 3000);
     }
@@ -120,7 +126,7 @@ function AddGame() {
 
 
 
-                <button className="button-success">Confirm</button>
+                <button className="button-success">Start Game!</button>
             </form>
         </div>
     );

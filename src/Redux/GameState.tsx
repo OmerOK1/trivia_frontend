@@ -16,7 +16,7 @@ export interface GameState {
 const initialState: GameState = {
     game: {} as GameModel,
     question: {} as QuestionModel,
-    questionIndex: 1,
+    questionIndex: 0,
     isLastQuestion: false
 };
 
@@ -84,12 +84,15 @@ export function GameReducer(
     switch (action.type) {
         case GameActionType.SetGame:
             newState.game = action.payload;
+            newState.question = newState.game?.questions?.at(0);
+            newState.questionIndex = 1;
+            newState.isLastQuestion = newState.game?.questionsPerRound === 1;
             break;
         case GameActionType.SetNextQuestion: //full state managemnet for next question transition. TODO: does not handle improper calls gracfully
             if (!newState.isLastQuestion) {
-            newState.question = newState.game?.questions?.at(newState.questionIndex);
-            newState.questionIndex++;
-            newState.isLastQuestion = newState.questionIndex === newState.game?.questionsPerRound;
+                newState.question = newState.game?.questions?.at(newState.questionIndex);
+                newState.questionIndex++;
+                newState.isLastQuestion = newState.questionIndex === newState.game?.questionsPerRound;
             }
             break;
         case GameActionType.CheckLastQuestion:

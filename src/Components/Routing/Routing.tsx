@@ -4,6 +4,7 @@ import SinglePlayerSettings from "../SinglePlayerSettings/SinglePlayerSettings";
 import SignUpPage from "../Resgistration/SignUp/SignUp";
 import MultiPlayerSettings from "../MultiPlayerSettings/MultiPlayerSettings";
 import SignInPage from "../Resgistration/SignIn/SignIn";
+import GamePageSP from "../GameLoopArea/GamePageSP/GamePageSP";
 
 function Routing(): JSX.Element {
     return (
@@ -15,7 +16,7 @@ function Routing(): JSX.Element {
                 <Route path="/multiplayersettings" element={<MultiPlayerSettings />} />
                 <Route path="/signin" element={<SignInPage />} />
                 <Route path="/joingame" element={<SignInPage />} />
-
+                <Route path="/game/singleplayer" element={<GamePageSP />} />
             </Routes>
         </div>
     );
