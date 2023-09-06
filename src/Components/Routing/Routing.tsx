@@ -17,6 +17,7 @@ function Routing(): JSX.Element {
                 <Route path="/signin" element={<SignInPage />} />
                 <Route path="/joingame" element={<SignInPage />} />
                 <Route path={"/game/singleplayer"} element={<GamePageSP />} />
+                <Route path={"/game/singleplayer/*"} element={<GamePageSP />} />
             </Routes>
         </div>
     );

@@ -9,7 +9,7 @@ import { LayoutEnum } from '../Models/Enums/LayoutEnum';
 import { useState } from 'react';
 import { addGameApi } from '../../WebAPI/UserApi';
 import store from '../../Redux/Store';
-import { GameActionType, setGameAction, setNextQuestionAction } from '../../Redux/GameState';
+import { setGameAction } from '../../Redux/GameState';
 
 function AddGame() {
     
@@ -31,7 +31,6 @@ function AddGame() {
             yup.string().required()
     });
     
-    
 
     const { register, handleSubmit, formState: { errors, isDirty, isValid } } = 
     useForm<GameModel>({ mode: "all", resolver: yupResolver(schema)});
@@ -46,7 +45,7 @@ function AddGame() {
             console.log("recieved: ");
             console.log(res.data);
             store.dispatch(setGameAction(res.data));
-            console.log("state: ")
+            console.log("state: ");
             console.log(store.getState().gameReducer);
             navigate("/game/singleplayer");
         })
@@ -72,59 +71,57 @@ function AddGame() {
 
                 <label htmlFor="answer timer">answer timer</label> 
                 <select {...register("answerTimeLimit")} defaultValue={15} id="answerTimeLimit">
-                <option value={15}>15 seconds</option>
-                <option value={30}>30 seconds</option>
-                <option value={60}>60 seconds</option>
+                    <option value={15}>15 seconds</option>
+                    <option value={30}>30 seconds</option>
+                    <option value={60}>60 seconds</option>
                 </select>
                 <span className="validation_rules">{errors.answerTimeLimit?.message}</span>
                 <br />
 
                 <label htmlFor="category">Category</label>
                 <select {...register("category")} defaultValue="ANY" id="category"> 
-                <option value="" disabled>Category</option>
-                {Object.keys(Category).map((key, index) => (
-                <option
-                aria-selected="true"
-                key={key}
-                value={key}
-                >{Object.values(Category)[index]}
-                </option>
-                ))}
+                    <option value="" disabled>Category</option>
+                    {Object.keys(Category).map((key, index) => (
+                        <option
+                        aria-selected="true"
+                        key={key}
+                        value={key}
+                        >{Object.values(Category)[index]}
+                        </option>
+                    ))}
                 </select>
                 <span className="validation_rules">{errors.category?.message}</span>
                 <br />
 
                 <label htmlFor="difficulty">difficulty</label>
                 <select {...register("difficulty")} defaultValue="ANY" id="difficulty"> 
-                <option value="" disabled>difficulty</option>
-                {Object.keys(Difficulty).map((key, index) => (
-                <option
-                aria-selected="true"
-                key={key}
-                value={key}
-                >{Object.values(Difficulty)[index]}
-                </option>
-                ))}
+                    <option value="" disabled>difficulty</option>
+                    {Object.keys(Difficulty).map((key, index) => (
+                        <option
+                        aria-selected="true"
+                        key={key}
+                        value={key}
+                        >{Object.values(Difficulty)[index]}
+                        </option>
+                    ))}
                 </select>
                 <span className="validation_rules">{errors.difficulty?.message}</span>
                 <br />
 
                 <label htmlFor="layout">layout</label>
                 <select {...register("layout")} placeholder="layout" defaultValue="" id="layout"> 
-                <option value="" disabled>layout</option>
-                {Object.keys(LayoutEnum).map((key, index) => (
-                <option
-                aria-selected="true"
-                key={key}
-                value={key}
-                >{Object.values(LayoutEnum)[index]}
-                </option>
-                ))}
+                    <option value="" disabled>layout</option>
+                    {Object.keys(LayoutEnum).map((key, index) => (
+                        <option
+                        aria-selected="true"
+                        key={key}
+                        value={key}
+                        >{Object.values(LayoutEnum)[index]}
+                        </option>
+                    ))}
                 </select>
                 <span className="validation_rules">{errors.layout?.message}</span>
                 <br />
-
-
 
                 <button className="button-success">Start Game!</button>
             </form>

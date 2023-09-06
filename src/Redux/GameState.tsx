@@ -2,6 +2,44 @@ import { number } from "yup";
 import { GameModel } from "../Components/Models/GameModel";
 import { QuestionModel } from "../Components/Models/QuestionModel";
 import { type } from "os";
+import { Console } from "console";
+
+
+const getInitialStateFromLocalStorage = (): GameState => {
+    const localState = localStorage.getItem("persistentState");
+    if (localState) {
+        try {
+            // Parse the JSON data from local storage
+            const parsedState = JSON.parse(localState);
+            // Make sure it matches the structure of GameState
+            if (isValidState(parsedState)) {
+                return parsedState;
+            }
+        } catch (error) {
+            // Handle any parsing errors
+            console.error("Error parsing local state:", error);
+        }
+    }
+    // If no valid state was found in local storage, return the default initial state
+    return {
+        game: {} as GameModel,
+        question: {} as QuestionModel,
+        questionIndex: 0,
+        isLastQuestion: false
+    };
+};
+
+const isValidState = (state: any): state is GameState => {
+    return (
+        typeof state === "object" &&
+        "game" in state &&
+        "question" in state &&
+        "questionIndex" in state &&
+        "isLastQuestion" in state
+    );
+};
+
+
 
 // Step 1 - Create AppState and manage the collection once and in a centralize place
 // Define your initial state and GameState type
@@ -13,12 +51,8 @@ export interface GameState {
 }
 
 // Initialize the game property with an empty object conforming to GameModel
-const initialState: GameState = {
-    game: {} as GameModel,
-    question: {} as QuestionModel,
-    questionIndex: 0,
-    isLastQuestion: false
-};
+const initialState: GameState = getInitialStateFromLocalStorage();
+
 
 // Step 2 - Define all possible actions for your application state
 export enum GameActionType {
@@ -106,5 +140,7 @@ export function GameReducer(
             break;
 
     }
+    localStorage.setItem("persistentState", JSON.stringify(newState));   
+
     return newState;
 }

@@ -1,38 +1,38 @@
 .menu-button-gray {
-    background-color: #d6d6d6; 
-    color: #000;
-    padding: 10px;
-    /*margin: 5px;*/
-    font-size: 18px;
-    border: none;
-    cursor: pointer;
-    border-radius: 25px;
-    width: 200px;
-    text-align: center;
-  }
+  background-color: #d6d6d6; 
+  color: #000;
+  padding: 10px;
+  /*margin: 5px;*/
+  font-size: 18px;
+  border: none;
+  cursor: pointer;
+  border-radius: 25px;
+  width: 200px;
+  text-align: center;
+}
 
-  .menu-button-green {
-    background-color: #61fd59; 
-    color: #000;
-    padding: 10px;
-    /*margin: 5px;*/
-    font-size: 18px;
-    border: none;
-    cursor: pointer;
-    border-radius: 25px;
-    width: 200px;
-    text-align: center;
-  }
+.menu-button-green {
+  background-color: #61fd59; 
+  color: #000;
+  padding: 10px;
+  /*margin: 5px;*/
+  font-size: 18px;
+  border: none;
+  cursor: pointer;
+  border-radius: 25px;
+  width: 200px;
+  text-align: center;
+}
 
-  .menu-button-red {
-    background-color: #ff2b2b; 
-    color: #ffffff;
-    padding: 10px;
-    /*margin: 5px;*/
-    font-size: 18px;
-    border: none;
-    cursor: pointer;
-    border-radius: 25px;
-    width: 200px;
-    text-align: center;
-  }
+.menu-button-red {
+  background-color: #ff2b2b; 
+  color: #ffffff;
+  padding: 10px;
+  /*margin: 5px;*/
+  font-size: 18px;
+  border: none;
+  cursor: pointer;
+  border-radius: 25px;
+  width: 200px;
+  text-align: center;
+}
