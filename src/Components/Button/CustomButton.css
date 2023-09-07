@@ -36,3 +36,16 @@
   width: 200px;
   text-align: center;
 }
+
+.menu-button-blue {
+  background-color: #2641f3; 
+  color: #ffffff;
+  padding: 10px;
+  /*margin: 5px;*/
+  font-size: 18px;
+  border: none;
+  cursor: pointer;
+  border-radius: 25px;
+  width: 200px;
+  text-align: center;
+}

@@ -4,7 +4,7 @@ import './CustomButton.css';
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   name?: string,
   className: string,
-  handleClick: Function;  // Change 'onClick' to 'handleClick'
+  handleClick: Function;  
 }
 
 function CustomButton(props: ButtonProps): JSX.Element {
