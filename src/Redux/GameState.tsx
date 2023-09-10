@@ -1,8 +1,6 @@
-import { number } from "yup";
 import { GameModel } from "../Components/Models/GameModel";
 import { QuestionModel } from "../Components/Models/QuestionModel";
-import { type } from "os";
-import { Console } from "console";
+import { UserAnswerModel } from "../Components/Models/UserAnswerModel";
 
 
 const getInitialStateFromLocalStorage = (): GameState => {
@@ -17,7 +15,7 @@ const getInitialStateFromLocalStorage = (): GameState => {
             }
         } catch (error) {
             // Handle any parsing errors
-            console.error("Error parsing local state:", error);
+            console.error("Error accessing local state:", error);
         }
     }
     // If no valid state was found in local storage, return the default initial state
@@ -25,7 +23,8 @@ const getInitialStateFromLocalStorage = (): GameState => {
         game: {} as GameModel,
         question: {} as QuestionModel,
         questionIndex: 0,
-        isLastQuestion: false
+        isLastQuestion: false,
+        userAnswers: [] as UserAnswerModel[],
     };
 };
 
@@ -35,7 +34,8 @@ const isValidState = (state: any): state is GameState => {
         "game" in state &&
         "question" in state &&
         "questionIndex" in state &&
-        "isLastQuestion" in state
+        "isLastQuestion" in state &&
+        "userAnswers" in state
     );
 };
 
@@ -48,6 +48,7 @@ export interface GameState {
     question?: QuestionModel;
     questionIndex: number;
     isLastQuestion: boolean;
+    userAnswers: UserAnswerModel[];
 }
 
 // Initialize the game property with an empty object conforming to GameModel
@@ -61,6 +62,7 @@ export enum GameActionType {
     SetNextQuestion = "setNextQuestion",
     IncrementIndex = "incrementIndex",
     SetQuestion = "setQuestion",
+    AddUserAnswer = "addUserAnswer",
 }
 
 // Step 3 - Define Action Interface to describe actionAction & payload if needed
@@ -107,6 +109,23 @@ export function incrementIndexAction() {
     }
 }
 
+export function addUserAnswerAction(
+    questionIndex: number,
+    answerText: string,
+    isCorrect: boolean
+): GameAction {
+    const userAnswer: UserAnswerModel = {
+        questionIndex: questionIndex,
+        answerText: answerText,
+        isCorrect: isCorrect,
+    };
+
+    return {
+        type: GameActionType.AddUserAnswer,
+        payload: userAnswer
+    }
+}
+
 // Step 5 - Reducer function perform the required action
 
 export function GameReducer(
@@ -121,6 +140,7 @@ export function GameReducer(
             newState.question = newState.game?.questions?.at(0);
             newState.questionIndex = 1;
             newState.isLastQuestion = newState.game?.questionsPerRound === 1;
+            newState.userAnswers = []
             break;
         case GameActionType.SetNextQuestion: //full state managemnet for next question transition. TODO: does not handle improper calls gracfully
             if (!newState.isLastQuestion) {
@@ -128,6 +148,10 @@ export function GameReducer(
                 newState.questionIndex++;
                 newState.isLastQuestion = newState.questionIndex === newState.game?.questionsPerRound;
             }
+            break;
+        case GameActionType.AddUserAnswer:
+            newState.userAnswers.push(action.payload);
+            console.log(newState.userAnswers);
             break;
         case GameActionType.CheckLastQuestion:
             newState.isLastQuestion = (newState.questionIndex === newState.game?.questionsPerRound);
@@ -140,7 +164,7 @@ export function GameReducer(
             break;
 
     }
-    localStorage.setItem("persistentState", JSON.stringify(newState));   
+    localStorage.setItem("persistentState", JSON.stringify(newState));
 
     return newState;
 }
