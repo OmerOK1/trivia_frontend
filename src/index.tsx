@@ -6,16 +6,23 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './Redux/Store';
-
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+//const defaultTheme = createTheme();
 root.render(
   <BrowserRouter>
-  <Provider store={store}>
+  {/* <ThemeProvider theme={defaultTheme} > */}
+  {/* <Provider store={store}> */}
   <App />
-  </Provider>
+  {/* </Provider> */}
+  {/* </ThemeProvider> */}
 </BrowserRouter>
 );
 
