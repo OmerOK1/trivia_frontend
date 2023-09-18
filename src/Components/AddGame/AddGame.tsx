@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSubmit } from 'react-router-dom';
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -10,9 +10,7 @@ import { useState } from 'react';
 import { addGameApi } from '../../WebAPI/UserApi';
 import store from '../../Redux/Store';
 import { setGameAction } from '../../Redux/GameState';
-import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
@@ -21,36 +19,34 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { Copyright } from '@mui/icons-material';
 import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
 import FormHelperText from '@mui/material/FormHelperText';
 import InputLabel from '@mui/material/InputLabel';
+import NativeSelect from '@mui/material/NativeSelect';
+import Button from '@mui/material/Button';
 
 
 function AddGame() {
 
     const navigate = useNavigate();
     const [inTimeout, setInTimeout] = useState(false);
-    const [answerTimeLimit, setAnswerTimeLimit] = React.useState("");
 
-    const handleChange = (event: SelectChangeEvent) => {
-        // const selectedValue = Number()
-        setAnswerTimeLimit(event.target.value);
-    };
+    yup.setLocale({ mixed: { notType: '' } })
+    yup.setLocale({ number: { min: (e) => `minimum is ${e.min}` } })
+    yup.setLocale({ number: { max: (e) => `maximum is ${e.max}` } })
 
     const schema = yup.object().shape({
         title:
             yup.string().notRequired(),
         category:
-            yup.string().required("please enter wanted category"),
+            yup.string().required("please enter a valid category"),
         difficulty:
-            yup.string().required("please enter difficulty level"),
+            yup.string().required("please enter a valid difficulty level"),
         questionsPerRound:
-            yup.number().integer().min(1).max(10).required("insert amount between 1 - 10"),
+            yup.number().integer("please use Integers.").min(1).max(10).required("insert an amount of questions between 1 - 10 only, please."),
         answerTimeLimit:
             yup.number().integer(),
         layout:
-            yup.string().required()
+            yup.string()
     });
 
 
@@ -69,19 +65,11 @@ function AddGame() {
         setTimeout(() => setInTimeout(false), 3000);
     }
 
-    return (
-        <Container 
-        // sx={{
-        //     backgroundColor: 'primary.light',
-        //     '&:hover': {
-        //       backgroundColor: 'primary.main',
-        //       opacity: [0.9, 0.8, 0.7],
-        //     },
-        //   }} 
-          >
-            <h1>Game settings</h1>
-            {/* Step 9 - handleSubmit your form  */}
 
+
+    return (
+        <Container>
+            <h1>Game settings</h1>
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <Box
@@ -90,146 +78,96 @@ function AddGame() {
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
-                    }}
-                >
+                    }}>
                     <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                         <LockOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        Sign in
+                        Game Settings
                     </Typography>
-
-                    <Box component="form" onSubmit={() => handleSubmit(addGame)} noValidate sx={{ mt: 1 }}>
-                        <TextField
+                    <Box component="form" onSubmit={handleSubmit(addGame)} noValidate sx={{ mt: 1 }}>
+                        <TextField sx={{ mt: 2 }}
                             margin="normal"
-                            required
                             fullWidth
-                            //   name="title"
                             label="Game Title"
                             type="text"
-                            id="title"
-                            autoComplete="current-title"
                             {...register("title")}
                         />
-                        <Box >
-                            <span className="validation_rules">{errors.title?.message}</span>
-                        </Box >
-
-                        <TextField
+                        <TextField sx={{ mt: 2 }}
                             {...register("questionsPerRound")}
-                            margin="normal"
-                            required
                             fullWidth
-                            //   name="title"
+                            error={!!errors.questionsPerRound}
+                            helperText={errors.questionsPerRound?.message}
+                            id="questions-per-round-field"
                             label="Number of Questions"
                             type="number"
-                            id="number"
-                            autoComplete="current-title"
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            variant="outlined"
+                            color="secondary"
                         />
-                        <Box >
-                            <span className="validation_rules">{errors.questionsPerRound?.message}</span>
-                        </Box >
 
-                        <FormControl sx={{ mt: 2, minWidth: 120 }} fullWidth>
-                            <InputLabel id="time-limit-label">Time Limit</InputLabel>
-                            <Select
-                                labelId="time-limit-label"
-                                {...register("answerTimeLimit")}
-                                value={answerTimeLimit}
-                                onChange={handleChange}
-                                displayEmpty
-                                label={"Time Limit"}
-                                inputProps={{ 'aria-label': '' }}
-                            >
-                                <MenuItem value={90}>
-                                    <em>90 seconds</em>
-                                </MenuItem>
-                                <MenuItem value={60}>60 seconds</MenuItem>
-                                <MenuItem value={30}>30 seconds</MenuItem>
-                                <MenuItem value={15}>15 seconds</MenuItem>
-
-                            </Select>
+                        <FormControl sx={{ mt: 2 }} fullWidth>
+                            <TextField
+                                color="success" variant="outlined" label="Time Limit"
+                                select SelectProps={{native: true}} {...register("answerTimeLimit")} defaultValue={90} 
+                                inputProps={{ name: 'answerTimeLimit', id: 'answer-time-limit' }}>
+                                <option value={90}>90 seconds</option>
+                                <option value={60}>60 seconds</option>
+                                <option value={30}>30 seconds</option>
+                            </TextField>
                         </FormControl>
 
+                        <FormControl sx={{ mt: 2 }} fullWidth>
+                            <TextField
+                                color="success" variant="outlined" label="Category"
+                                {...register("category")} defaultValue={Category.ANY} select SelectProps={{native: true}}
+                                error={!!errors.category} helperText={errors.category?.message}
+                            >
+                                {}
+                                {Object.entries(Category).map(([categoryKey, categoryValue]) => (
+                                    <option key={categoryKey} value={categoryKey}>{categoryValue}</option>
+                                ))}
+                            </TextField>
+                        </FormControl>
 
+                        <FormControl sx={{ mt: 2 }} fullWidth >
+                            <TextField
+                                color="success" variant="outlined" label="Difficulty"
+                                {...register("difficulty")} defaultValue={Difficulty.ANY} select SelectProps={{native: true}}
+                                error={!!errors.difficulty} helperText={errors.difficulty?.message}
+                            >
+                                {Object.keys(Difficulty).map((difficultyKey) => (
+                                    <option key={difficultyKey} value={difficultyKey}>{difficultyKey}</option>
+                                ))}
+                            </TextField>
+                        </FormControl>
+
+                        <FormControl fullWidth sx={{ mt: 2 }}>
+                            <TextField
+                                color="success" variant="outlined" label="Layout"
+                                {...register("layout")} defaultValue={LayoutEnum.NORMAL} select SelectProps={{native: true}}
+                                error={!!errors.layout} helperText={errors.layout?.message}
+                            >
+                                {Object.keys(LayoutEnum).map((layoutKey) => (
+                                    <option key={layoutKey} value={layoutKey}>{layoutKey}</option>
+                                ))}
+                            </TextField>
+                        </FormControl>
+
+                        <Button type="submit" id='submit-button' variant="outlined" size='large' disabled={!isValid} color='success' sx={{ mt: 2 }}>
+                            Start Game
+                        </Button>
                     </ Box>
                 </Box>
                 <Copyright sx={{ mt: 8, mb: 4 }} />
             </Container>
-
-
-            {/* <form onSubmit={handleSubmit(addGame)} className="add_game_form flex-center-col">
-
-                <label htmlFor="title">game title</label>
-                <input {...register("title")} type="title" placeholder= "title" id="title" />
-                <span className="validation_rules">{errors.title?.message}</span>
-                <br />
-
-                <label htmlFor="number of questions">number of questions</label>
-                <input {...register("questionsPerRound")} type='number' min={1} max={10} id="questionsPerRound" />
-                <span className="validation_rules">{errors.questionsPerRound?.message}</span>
-                <br />
-
-                <label htmlFor="answer timer">answer timer</label> 
-                <select {...register("answerTimeLimit")} defaultValue={15} id="answerTimeLimit">
-                    <option value={15}>15 seconds</option>
-                    <option value={30}>30 seconds</option>
-                    <option value={60}>60 seconds</option>
-                </select>
-                <span className="validation_rules">{errors.answerTimeLimit?.message}</span>
-                <br />
-
-                <label htmlFor="category">Category</label>
-                <select {...register("category")} defaultValue="ANY" id="category"> 
-                    <option value="" disabled>Category</option>
-                    {Object.keys(Category).map((key, index) => (
-                        <option
-                        aria-selected="true"
-                        key={key}
-                        value={key}
-                        >{Object.values(Category)[index]}
-                        </option>
-                    ))}
-                </select>
-                <span className="validation_rules">{errors.category?.message}</span>
-                <br />
-
-                <label htmlFor="difficulty">difficulty</label>
-                <select {...register("difficulty")} defaultValue="ANY" id="difficulty"> 
-                    <option value="" disabled>difficulty</option>
-                    {Object.keys(Difficulty).map((key, index) => (
-                        <option
-                        aria-selected="true"
-                        key={key}
-                        value={key}
-                        >{Object.values(Difficulty)[index]}
-                        </option>
-                    ))}
-                </select>
-                <span className="validation_rules">{errors.difficulty?.message}</span>
-                <br />
-
-                <label htmlFor="layout">layout</label>
-                <select {...register("layout")} placeholder="layout" defaultValue="" id="layout"> 
-                    <option value="" disabled>layout</option>
-                    {Object.keys(LayoutEnum).map((key, index) => (
-                        <option
-                        aria-selected="true"
-                        key={key}
-                        value={key}
-                        >{Object.values(LayoutEnum)[index]}
-                        </option>
-                    ))}
-                </select>
-                <span className="validation_rules">{errors.layout?.message}</span>
-                <br />
-
-                <button className="button-success">Start Game!</button>
-            </form> */}
-        </Container>
+        </Container >
     );
 
 
 }
 
 export default AddGame;
+

@@ -1,13 +1,13 @@
 import React, { ButtonHTMLAttributes, MouseEventHandler } from 'react';
-import './CustomButton.css';
+import './CustomAnswerButton.css';
 
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface AnswerButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   name?: string,
   className: string,
   handleClick: Function;  
 }
 
-function CustomButton(props: ButtonProps): JSX.Element {
+function CustomButton(props: AnswerButtonProps): JSX.Element {
   return <button className={"menu-button " + props.className} onClick={()=>props.handleClick()}>{props.name}</button>;
 }
 
