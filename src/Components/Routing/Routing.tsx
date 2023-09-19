@@ -5,10 +5,11 @@ import SignUpPage from "../Resgistration/SignUp/SignUp";
 import MultiPlayerSettings from "../MultiPlayerSettings/MultiPlayerSettings";
 import SignInPage from "../Resgistration/SignIn/SignIn";
 import GamePageSP from "../GameLoopArea/GamePageSP/GamePageSP";
+import "./Routing.css"
 
 function Routing(): JSX.Element {
     return (
-        <div className="Routing">
+        <div className="routing">
             <Routes>
                 <Route path="/" element={<Landing />} />
                 <Route path="/demosettings" element={<SinglePlayerSettings />} />

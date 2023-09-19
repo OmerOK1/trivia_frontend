@@ -1,13 +1,15 @@
 import { Route, Routes } from "react-router-dom";
-import GameWelcome from "../GameWelcome/GameWelcome";
-import QuestionPage from "../QuestionPage/QuestionPage";
-import GamePageSP from "../GamePageSP/GamePageSP";
-import GameReview from "../GameReview/GameReview";
+import GameWelcome from "../../GameLoopArea/GameWelcome/GameWelcome";
+import QuestionPage from "../../GameLoopArea/QuestionPage/QuestionPage";
+import GamePageSP from "../../GameLoopArea/GamePageSP/GamePageSP";
+import GameReview from "../../GameLoopArea/GameReview/GameReview";
+import "../Routing.css"
+
 
 
 function GameRouting(): JSX.Element {
     return (
-        <div className="Routing">
+        <div className="routing">
             <Routes>
                 <Route path="/" element={<GamePageSP/>} />
                 <Route path="/welcome" element={<GameWelcome />} />

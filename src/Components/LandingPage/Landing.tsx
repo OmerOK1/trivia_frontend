@@ -4,7 +4,7 @@ import "./Landing.css"
 function Landing(): JSX.Element {
 
     return (
-        <div>
+        <div className="landing-page">
             <Menu />
         </div>
     );

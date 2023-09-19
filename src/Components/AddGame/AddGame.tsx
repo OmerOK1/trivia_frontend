@@ -17,11 +17,8 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { Copyright } from '@mui/icons-material';
+import { Copyright, Height } from '@mui/icons-material';
 import FormControl from '@mui/material/FormControl';
-import FormHelperText from '@mui/material/FormHelperText';
-import InputLabel from '@mui/material/InputLabel';
-import NativeSelect from '@mui/material/NativeSelect';
 import Button from '@mui/material/Button';
 
 
@@ -68,23 +65,22 @@ function AddGame() {
 
 
     return (
-        <Container>
-            <h1>Game settings</h1>
-            <Container component="main" maxWidth="xs">
+        <Container id="form-page" maxWidth={false} >
+            <Container component="main" maxWidth="sm">
                 <CssBaseline />
                 <Box
                     sx={{
-                        marginTop: 8,
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
                     }}>
+                    <Typography component="h1" variant="h5" marginTop={8}>
+                        Game Settings
+                    </Typography>
                     <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                         <LockOutlinedIcon />
                     </Avatar>
-                    <Typography component="h1" variant="h5">
-                        Game Settings
-                    </Typography>
+
                     <Box component="form" onSubmit={handleSubmit(addGame)} noValidate sx={{ mt: 1 }}>
                         <TextField sx={{ mt: 2 }}
                             margin="normal"
@@ -111,7 +107,7 @@ function AddGame() {
                         <FormControl sx={{ mt: 2 }} fullWidth>
                             <TextField
                                 color="success" variant="outlined" label="Time Limit"
-                                select SelectProps={{native: true}} {...register("answerTimeLimit")} defaultValue={90} 
+                                select SelectProps={{ native: true }} {...register("answerTimeLimit")} defaultValue={90}
                                 inputProps={{ name: 'answerTimeLimit', id: 'answer-time-limit' }}>
                                 <option value={90}>90 seconds</option>
                                 <option value={60}>60 seconds</option>
@@ -122,10 +118,10 @@ function AddGame() {
                         <FormControl sx={{ mt: 2 }} fullWidth>
                             <TextField
                                 color="success" variant="outlined" label="Category"
-                                {...register("category")} defaultValue={Category.ANY} select SelectProps={{native: true}}
+                                {...register("category")} defaultValue={Category.ANY} select SelectProps={{ native: true }}
                                 error={!!errors.category} helperText={errors.category?.message}
                             >
-                                {}
+                                { }
                                 {Object.entries(Category).map(([categoryKey, categoryValue]) => (
                                     <option key={categoryKey} value={categoryKey}>{categoryValue}</option>
                                 ))}
@@ -135,7 +131,7 @@ function AddGame() {
                         <FormControl sx={{ mt: 2 }} fullWidth >
                             <TextField
                                 color="success" variant="outlined" label="Difficulty"
-                                {...register("difficulty")} defaultValue={Difficulty.ANY} select SelectProps={{native: true}}
+                                {...register("difficulty")} defaultValue={Difficulty.ANY} select SelectProps={{ native: true }}
                                 error={!!errors.difficulty} helperText={errors.difficulty?.message}
                             >
                                 {Object.keys(Difficulty).map((difficultyKey) => (
@@ -147,7 +143,7 @@ function AddGame() {
                         <FormControl fullWidth sx={{ mt: 2 }}>
                             <TextField
                                 color="success" variant="outlined" label="Layout"
-                                {...register("layout")} defaultValue={LayoutEnum.NORMAL} select SelectProps={{native: true}}
+                                {...register("layout")} defaultValue={LayoutEnum.NORMAL} select SelectProps={{ native: true }}
                                 error={!!errors.layout} helperText={errors.layout?.message}
                             >
                                 {Object.keys(LayoutEnum).map((layoutKey) => (

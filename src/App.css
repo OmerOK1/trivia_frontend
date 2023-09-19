@@ -2,11 +2,11 @@
   text-align: center;
 }
 body {
-  background-color: #58adf8; /* Change to your desired lighter shade of blue */
+  background-color: #58adf8; 
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #c6162a;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
