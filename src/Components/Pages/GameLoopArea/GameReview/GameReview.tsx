@@ -1,51 +1,52 @@
-import { connect } from "react-redux";
-import { GameState } from "../../../../Redux/GameState";
-import { UserAnswerModel } from "../../../../Models/UserAnswerModel";
-import { QuestionModel } from "../../../../Models/QuestionModel";
+import { useState } from "react";
 import store from "../../../../Redux/Store";
+import TableContainer from "@mui/material/TableContainer";
+import Paper from "@mui/material/Paper";
+import Table from "@mui/material/Table";
+import TableRow from "@mui/material/TableRow";
+import TableHead from "@mui/material/TableHead";
+import TableCell from "@mui/material/TableCell";
+import TableBody from "@mui/material/TableBody";
+import Box from "@mui/material/Box";
+import CustomLink from "../../../Utils/CustomLink/CustomLink";
+import CheckSharpIcon from '@mui/icons-material/CheckSharp';
 
 function GameReview() {
-    const game = store.getState().gameReducer.game;
-    const userAnswers = store.getState().gameReducer.userAnswers;
-    
+  const game = store.getState().gameReducer.game;
+  const userAnswers = store.getState().gameReducer.userAnswers;
+  const correctAnswers = useState(store.getState().gameReducer.userAnswers.filter((answer) => answer.isCorrect));
 
-    //const totalCorrectAnswers = userAnswers.filter((answer) => answer.isCorrect).length;
-
-    console.log('userAnswers:', userAnswers);
-    console.log('title:', game?.title);
-    console.log('gameLength:', game?.questionsPerRound);
-    console.log('questions:', game?.questions);
-
-
-
-    return (
-        <div className="game-review-page">
-          <h1>{game?.title}</h1>
-          <p>Total correct answers: {userAnswers.filter((answer)=>answer.isCorrect).length}/{game?.questionsPerRound}</p>
-          <table>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Question</th>
-                <th>Result</th>
-              </tr>
-            </thead>
-            <tbody>
-              {game?.questions?.map((question, index) => {
-                // Find the user's answer for this question
-                const userAnswer = userAnswers.find((answer) => answer.questionIndex === index);
-                const isCorrect = userAnswer?.isCorrect || false;
-                return (
-                  <tr key={index}>
-                    <td>{index + 1}</td>
-                    <td>{question.questionBody}</td>
-                    <td>{isCorrect ? "✅" : "❌"}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      );
+  return (
+    <div>
+      <TableContainer component={Paper} >
+        <p>Total correct answers: {correctAnswers.length} / {game?.questionsPerRound}</p>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell align="right">#</TableCell>
+              <TableCell>Question</TableCell>
+              <TableCell>Result</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {game?.questions?.map((question, index) => {
+              const userAnswer = userAnswers.find((answer) => answer.questionIndex === index);
+              const isCorrect = userAnswer?.isCorrect || false;
+              return (
+                <TableRow key={index}>
+                  <TableCell>{index + 1}</TableCell>
+                  <TableCell>{question.questionBody}</TableCell>
+                  <TableCell>{isCorrect ? <CheckSharpIcon color="success" fontSize="medium" />  : "❌"}</TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} marginTop={2} >
+        <CustomLink to="/">home</CustomLink>
+      </Box>
+    </div>
+  );
 }
 export default GameReview;

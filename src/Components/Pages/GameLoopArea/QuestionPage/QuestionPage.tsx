@@ -7,10 +7,7 @@ import CustomLink from "../../../Utils/CustomLink/CustomLink";
 import "./QuestionPage.css"
 import Box from "@mui/material/Box";
 import Grid from '@mui/material/Unstable_Grid2';
-import { experimentalStyled as styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
-import { green, grey } from "@mui/material/colors";
-import { number } from "yup";
 
 
 export function QuestionPage() {

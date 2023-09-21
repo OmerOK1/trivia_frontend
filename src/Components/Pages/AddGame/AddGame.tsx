@@ -7,11 +7,9 @@ import { useState } from 'react';
 import { addGameApi } from '../../../WebAPI/UserApi';
 import store from '../../../Redux/Store';
 import { setGameAction } from '../../../Redux/GameState';
-import Avatar from '@mui/material/Avatar';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { Copyright, Height } from '@mui/icons-material';
@@ -74,12 +72,9 @@ function AddGame() {
                         flexDirection: 'column',
                         alignItems: 'center',
                     }}>
-                    <Typography component="h1" variant="h5" marginTop={8}>
+                    <Typography component="h1" variant="h5" marginBottom={8}>
                         Game Settings
                     </Typography>
-                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                        <LockOutlinedIcon />
-                    </Avatar>
 
                     <Box component="form" onSubmit={handleSubmit(addGame)} noValidate sx={{ mt: 1 }}>
                         <TextField sx={{ mt: 2 }}
@@ -92,6 +87,7 @@ function AddGame() {
                         <TextField sx={{ mt: 2 }}
                             {...register("questionsPerRound")}
                             fullWidth
+                            defaultValue={10}
                             error={!!errors.questionsPerRound}
                             helperText={errors.questionsPerRound?.message}
                             id="questions-per-round-field"
@@ -152,12 +148,11 @@ function AddGame() {
                             </TextField>
                         </FormControl>
 
-                        <Button type="submit" id='submit-button' variant="outlined" size='large' disabled={!isValid} color='success' sx={{ mt: 2 }}>
+                        <Button type="submit" id='submit-button' variant="contained" size="large" disabled={!isValid} color='primary' sx={{ mt: 2 }}>
                             Start Game
                         </Button>
                     </ Box>
                 </Box>
-                <Copyright sx={{ mt: 8, mb: 4 }} />
             </Container>
         </Container >
     );
