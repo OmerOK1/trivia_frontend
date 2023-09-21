@@ -2,14 +2,11 @@ import { useNavigate, useSubmit } from 'react-router-dom';
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { GameModel } from '../Models/GameModel';
-import { Category } from '../Models/Enums/Category';
-import { Difficulty } from '../Models/Enums/Difficulty';
-import { LayoutEnum } from '../Models/Enums/LayoutEnum';
+import { GameModel } from '../../../Models/GameModel';
 import { useState } from 'react';
-import { addGameApi } from '../../WebAPI/UserApi';
-import store from '../../Redux/Store';
-import { setGameAction } from '../../Redux/GameState';
+import { addGameApi } from '../../../WebAPI/UserApi';
+import store from '../../../Redux/Store';
+import { setGameAction } from '../../../Redux/GameState';
 import Avatar from '@mui/material/Avatar';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -20,6 +17,9 @@ import Container from '@mui/material/Container';
 import { Copyright, Height } from '@mui/icons-material';
 import FormControl from '@mui/material/FormControl';
 import Button from '@mui/material/Button';
+import { Difficulty } from '../../../Models/Enums/Difficulty';
+import { Category } from '../../../Models/Enums/Category';
+import { LayoutEnum } from '../../../Models/Enums/LayoutEnum';
 
 
 function AddGame() {

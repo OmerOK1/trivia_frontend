@@ -1,5 +1,5 @@
 import globals from "../Services/Globals";
-import { GameModel } from "../Components/Models/GameModel";
+import { GameModel } from "../Models/GameModel";
 import axios from "axios";
 
 

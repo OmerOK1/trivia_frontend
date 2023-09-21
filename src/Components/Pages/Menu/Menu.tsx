@@ -1,6 +1,6 @@
 import './Menu.css';
 import { useNavigate } from 'react-router-dom';
-import CustomLink from '../CustomLink/CustomLink';
+import CustomLink from '../../Utils/CustomLink/CustomLink';
 
 function Menu(): JSX.Element {
   const navigation = useNavigate();

@@ -1,6 +1,6 @@
-import { GameModel } from "../Components/Models/GameModel";
-import { QuestionModel } from "../Components/Models/QuestionModel";
-import { UserAnswerModel } from "../Components/Models/UserAnswerModel";
+import { GameModel } from "../Models/GameModel";
+import { QuestionModel } from "../Models/QuestionModel";
+import { UserAnswerModel } from "../Models/UserAnswerModel";
 
 
 const getInitialStateFromLocalStorage = (): GameState => {

@@ -1,9 +1,9 @@
 import { useState } from "react";
-import store from "../../../Redux/Store";
-import CustomButton from "../../Button/CustomButton";
-import { QuestionModel } from "../../Models/QuestionModel";
-import { addUserAnswerAction, setNextQuestionAction } from "../../../Redux/GameState";
-import CustomLink from "../../CustomLink/CustomLink";
+import store from "../../../../Redux/Store";
+import CustomButton from "../../../Utils/Button/CustomButton";
+import { QuestionModel } from "../../../../Models/QuestionModel";
+import { addUserAnswerAction, setNextQuestionAction } from "../../../../Redux/GameState";
+import CustomLink from "../../../Utils/CustomLink/CustomLink";
 import "./QuestionPage.css"
 import Box from "@mui/material/Box";
 import Grid from '@mui/material/Unstable_Grid2';
@@ -47,7 +47,7 @@ export function QuestionPage() {
         setTimeout(() => setInTimeout(false), 1500);
     }
 
-    /* (buttonsSelection[`button${index + 1}` as keyof typeof buttonsSelection])? "secondary": "secondary" */
+    
     function handleButtonColor(answerNumber: number): "secondary" | "success" | "error" {
         if (buttonsSelection[`button${answerNumber}` as keyof typeof buttonsSelection]) {
             return (answerNumber === correctAnswerNumber())? "success" : "error";

@@ -1,10 +1,10 @@
 import { Route, Routes } from "react-router-dom";
-import Landing from "../LandingPage/Landing";
-import SinglePlayerSettings from "../SinglePlayerSettings/SinglePlayerSettings";
-import SignUpPage from "../Resgistration/SignUp/SignUp";
-import MultiPlayerSettings from "../MultiPlayerSettings/MultiPlayerSettings";
-import SignInPage from "../Resgistration/SignIn/SignIn";
-import GamePageSP from "../GameLoopArea/GamePageSP/GamePageSP";
+import Landing from "../../Pages/LandingPage/Landing";
+import SinglePlayerSettings from "../../Pages/SinglePlayerSettings/SinglePlayerSettings";
+import SignUpPage from "../../Resgistration/SignUp/SignUp";
+import MultiPlayerSettings from "../../Pages/MultiPlayerSettings/MultiPlayerSettings";
+import SignInPage from "../../Resgistration/SignIn/SignIn";
+import GamePageSP from "../../Pages/GameLoopArea/GamePageSP/GamePageSP";
 import "./Routing.css"
 
 function Routing(): JSX.Element {

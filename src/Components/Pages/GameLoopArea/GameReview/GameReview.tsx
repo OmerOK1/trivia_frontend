@@ -1,8 +1,8 @@
 import { connect } from "react-redux";
-import { GameState } from "../../../Redux/GameState";
-import { UserAnswerModel } from "../../Models/UserAnswerModel";
-import { QuestionModel } from "../../Models/QuestionModel";
-import store from "../../../Redux/Store";
+import { GameState } from "../../../../Redux/GameState";
+import { UserAnswerModel } from "../../../../Models/UserAnswerModel";
+import { QuestionModel } from "../../../../Models/QuestionModel";
+import store from "../../../../Redux/Store";
 
 function GameReview() {
     const game = store.getState().gameReducer.game;

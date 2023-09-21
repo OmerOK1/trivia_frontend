@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import store from "../../../Redux/Store";
-import CustomLink from "../../CustomLink/CustomLink";
+import store from "../../../../Redux/Store";
+import CustomLink from "../../../Utils/CustomLink/CustomLink";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";

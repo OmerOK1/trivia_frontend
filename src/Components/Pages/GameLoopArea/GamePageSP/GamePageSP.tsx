@@ -1,9 +1,8 @@
-import Container from "@mui/material/Container";
-import GameRouting from "../../Routing/GameRouting/GameRouting";
 import { Outlet } from "react-router-dom";
 import './GamePage.css'
+import GameRouting from "../../../Utils/Routing/GameRouting/GameRouting";
 
-function GamePageSP() {
+function GamePageSP(): JSX.Element {
     return (
         <div className="game-page">
             <GameRouting />
