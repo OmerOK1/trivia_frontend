@@ -1,13 +1,13 @@
 import { Route, Routes } from "react-router-dom";
-import GameWelcome from "../../../Pages/GameLoopArea/GameWelcome/GameWelcome";
-import QuestionPage from "../../../Pages/GameLoopArea/QuestionPage/QuestionPage";
-import GameReview from "../../../Pages/GameLoopArea/GameReview/GameReview";
-import GamePageSP from "../../../Pages/GameLoopArea/GamePageSP/GamePageSP";
+import GameWelcome from "../../../Pages/GameLoopArea/Singleplayer/GameWelcome/GameWelcome";
+import QuestionPage from "../../../Pages/GameLoopArea/Singleplayer/QuestionPage/QuestionPage";
+import GameReview from "../../../Pages/GameLoopArea/Singleplayer/GameReview/GameReview";
+import GamePageSP from "../../../Pages/GameLoopArea/Singleplayer/GamePageSP/GamePageSP";
 import "../Routing.css"
 
 
 
-function GameRouting(): JSX.Element {
+function GameRoutingSP(): JSX.Element {
     return (
         <div className="routing-sub">
             <Routes>
@@ -21,4 +21,4 @@ function GameRouting(): JSX.Element {
     );
 }
 
-export default GameRouting;
+export default GameRoutingSP;

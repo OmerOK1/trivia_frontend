@@ -1,5 +1,5 @@
 import { useState } from "react";
-import store from "../../../../Redux/Store";
+import store from "../../../../../Redux/Store";
 import TableContainer from "@mui/material/TableContainer";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -8,7 +8,7 @@ import TableHead from "@mui/material/TableHead";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import Box from "@mui/material/Box";
-import CustomLink from "../../../Utils/CustomLink/CustomLink";
+import CustomLink from "../../../../Utils/CustomLink/CustomLink";
 import CheckSharpIcon from '@mui/icons-material/CheckSharp';
 
 function GameReview() {

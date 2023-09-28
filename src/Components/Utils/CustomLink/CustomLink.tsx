@@ -12,8 +12,8 @@ function CustomLink(props: CustomLinkProps): JSX.Element {
 
     return (
 
-        <Link className={match ? "CustomLink active" : "CustomLink"} to={props.to}>
-            <Button variant="contained" size="large">{props.children}</Button>
+        <Link className={match ? "CustomLink active" : "CustomLink"} style={{width: '100%'}} to={props.to}>
+            <Button variant="contained" fullWidth={true} size="large">{props.children}</Button>
         </Link>
     );
 }

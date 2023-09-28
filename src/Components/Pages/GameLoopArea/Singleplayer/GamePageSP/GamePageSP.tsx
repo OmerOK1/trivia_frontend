@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import './GamePage.css'
-import GameRouting from "../../../Utils/Routing/GameRouting/GameRouting";
-import store from "../../../../Redux/Store";
+import GameRoutingSP from "../../../../Utils/Routing/GameRouting/GameRoutingSP";
+import store from "../../../../../Redux/Store";
 import Typography from "@mui/material/Typography";
 
 function GamePageSP(): JSX.Element {
@@ -9,7 +9,7 @@ function GamePageSP(): JSX.Element {
     return (
         <div className="game-page">
             {title !== undefined && <Typography variant='h3' sx={{cursor: 'pointer'}} >{title}</Typography>}
-            <GameRouting />
+            <GameRoutingSP />
             <Outlet />
         </div>
     )

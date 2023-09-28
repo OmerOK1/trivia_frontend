@@ -1,9 +1,9 @@
 import { useState } from "react";
-import store from "../../../../Redux/Store";
-import CustomButton from "../../../Utils/Button/CustomButton";
-import { QuestionModel } from "../../../../Models/QuestionModel";
-import { addUserAnswerAction, setNextQuestionAction } from "../../../../Redux/GameState";
-import CustomLink from "../../../Utils/CustomLink/CustomLink";
+import store from "../../../../../Redux/Store";
+import CustomButton from "../../../../Utils/Button/CustomButton";
+import { QuestionModel } from "../../../../../Models/QuestionModel";
+import { addUserAnswerAction, setNextQuestionAction } from "../../../../../Redux/GameState";
+import CustomLink from "../../../../Utils/CustomLink/CustomLink";
 import "./QuestionPage.css"
 import Box from "@mui/material/Box";
 import Grid from '@mui/material/Unstable_Grid2';
@@ -81,7 +81,7 @@ export function QuestionPage() {
                 <Grid container spacing={{ xs: 5, md: 5 }} columns={{ xs: 3, sm: 6 }}>
                     {Array.from(Array(4)).map((_, index) => (
                         <Grid xs={3} sm={3} key={index}>
-                            <Button color={handleButtonColor(index+1)} variant="contained" size="large"
+                            <Button color={handleButtonColor(index+1)} variant="contained" size="large" fullWidth={true}
                             onClick={() => handleAnswerChoice(
                                 index + 1, currentQuestion?.[`option${index + 1}` as keyof QuestionModel]!
                             )}>{index + 1}. {currentQuestion?.[`option${index + 1}` as keyof QuestionModel]} </Button>

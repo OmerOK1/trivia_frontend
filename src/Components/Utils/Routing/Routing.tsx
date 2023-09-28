@@ -4,8 +4,9 @@ import SinglePlayerSettings from "../../Pages/SinglePlayerSettings/SinglePlayerS
 import SignUpPage from "../../Resgistration/SignUp/SignUp";
 import MultiPlayerSettings from "../../Pages/MultiPlayerSettings/MultiPlayerSettings";
 import SignInPage from "../../Resgistration/SignIn/SignIn";
-import GamePageSP from "../../Pages/GameLoopArea/GamePageSP/GamePageSP";
+import GamePageSP from "../../Pages/GameLoopArea/Singleplayer/GamePageSP/GamePageSP";
 import "./Routing.css"
+import GamePageMP from "../../Pages/GameLoopArea/Multiplayer/GamePageMP/GamePageMP";
 
 function Routing(): JSX.Element {
     return (
@@ -17,8 +18,8 @@ function Routing(): JSX.Element {
                 <Route path="/multiplayersettings" element={<MultiPlayerSettings />} />
                 <Route path="/signin" element={<SignInPage />} />
                 <Route path="/joingame" element={<SignInPage />} />
-                <Route path={"/game/singleplayer"} element={<GamePageSP />} />
                 <Route path={"/game/singleplayer/*"} element={<GamePageSP />} />
+                <Route path={"/game/multiplayer/*"} element={<GamePageMP />} />
             </Routes>
         </div>
     );

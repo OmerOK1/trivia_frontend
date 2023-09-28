@@ -1,11 +1,10 @@
 import { useNavigate } from "react-router-dom";
-import store from "../../../../Redux/Store";
-import CustomLink from "../../../Utils/CustomLink/CustomLink";
+import store from "../../../../../Redux/Store";
+import CustomLink from "../../../../Utils/CustomLink/CustomLink";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { Height } from "@mui/icons-material";
 
 function GameWelcome(): JSX.Element {
     const messages = [
@@ -24,12 +23,12 @@ function GameWelcome(): JSX.Element {
       const randomMessage = messages[ Math.floor(Math.random() * messages.length) ];
 
     return (
-        <Container maxWidth={false} sx={{ height: 100 , display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' }} >
+        <Container maxWidth={false} sx={{ height: 100 , display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' , alignItems: 'center' }} >
             <CssBaseline />
             <Typography component="h1" variant="h5" marginBottom={8}>
                 {randomMessage}
             </Typography>
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} >
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '35%' }} >
                 <CustomLink to="/game/singleplayer/question">Let's Play!</CustomLink>
             </Box>
         </Container>

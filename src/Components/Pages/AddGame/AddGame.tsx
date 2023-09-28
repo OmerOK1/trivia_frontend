@@ -12,7 +12,6 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { Copyright, Height } from '@mui/icons-material';
 import FormControl from '@mui/material/FormControl';
 import Button from '@mui/material/Button';
 import { Difficulty } from '../../../Models/Enums/Difficulty';
@@ -20,8 +19,8 @@ import { Category } from '../../../Models/Enums/Category';
 import { LayoutEnum } from '../../../Models/Enums/LayoutEnum';
 
 
-function AddGame() {
-
+function AddGame(props: {isMP: boolean}) {
+    const nextPage = (props.isMP)? "/game/multiplayer" : "/game/singleplayer"; // TODO: change left string to MP address once created.
     const navigate = useNavigate();
     const [inTimeout, setInTimeout] = useState(false);
 
@@ -52,10 +51,12 @@ function AddGame() {
     const addGame = async (game: GameModel) => {
         if (inTimeout) { return; }
         setInTimeout(true);
+        game.isMultiplayer = props.isMP;
         await addGameApi(game).then((res) => {
+            res.data.url = "http://192.168.1.25:3000/"+res.data.url; //TODO: generlize hard coded part to root domain url
             store.dispatch(setGameAction(res.data));
             console.log(store.getState().gameReducer);
-            navigate("/game/singleplayer");
+            navigate(nextPage);
         })
         setTimeout(() => setInTimeout(false), 3000);
     }

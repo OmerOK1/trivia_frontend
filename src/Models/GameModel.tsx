@@ -13,4 +13,5 @@ export interface GameModel {
     layout?: LayoutEnum;
     url?: string;
     questions?: QuestionModel[];
+    isMultiplayer?: boolean;
 }
