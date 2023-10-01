@@ -21,6 +21,7 @@ function GameWelcome(): JSX.Element {
         "The countdown to trivia glory begins now. Buckle up for an exciting knowledge adventure."
       ];
       const randomMessage = messages[ Math.floor(Math.random() * messages.length) ];
+      
 
     return (
         <Container maxWidth={false} sx={{ height: 100 , display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' , alignItems: 'center' }} >

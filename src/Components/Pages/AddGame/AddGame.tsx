@@ -61,8 +61,6 @@ function AddGame(props: {isMP: boolean}) {
         setTimeout(() => setInTimeout(false), 3000);
     }
 
-
-
     return (
         <Container id="form-page" maxWidth={false} >
             <Container component="main" maxWidth="sm">

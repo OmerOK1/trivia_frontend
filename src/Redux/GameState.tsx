@@ -1,4 +1,5 @@
 import { GameModel } from "../Models/GameModel";
+import { PlayerModel } from "../Models/PlayerModel";
 import { QuestionModel } from "../Models/QuestionModel";
 import { UserAnswerModel } from "../Models/UserAnswerModel";
 
@@ -25,8 +26,16 @@ const getInitialStateFromLocalStorage = (): GameState => {
         questionIndex: 0,
         isLastQuestion: false,
         userAnswers: [] as UserAnswerModel[],
+        thisPlayer: {} as PlayerModel
     };
 };
+
+function initThisPlayer(player: any): PlayerModel {
+    return ('playerId' in player) ? player : {
+        playerId: "PLACEHOLDER ID - SET THIS IN SERVER", //TODO: set in server using ip and user agent
+        name: "PLACEHOLDER NAME - SET THIS" // TODO: set in join page
+    };
+}
 
 const isValidState = (state: any): state is GameState => {
     return (
@@ -35,7 +44,8 @@ const isValidState = (state: any): state is GameState => {
         "question" in state &&
         "questionIndex" in state &&
         "isLastQuestion" in state &&
-        "userAnswers" in state
+        "userAnswers" in state &&
+        "thisPlayer" in state
     );
 };
 
@@ -49,7 +59,8 @@ export interface GameState {
     questionIndex: number;
     isLastQuestion: boolean;
     userAnswers: UserAnswerModel[];
-}
+    thisPlayer: PlayerModel;
+};
 
 // Initialize the game property with an empty object conforming to GameModel
 const initialState: GameState = getInitialStateFromLocalStorage();
@@ -63,6 +74,7 @@ export enum GameActionType {
     IncrementIndex = "incrementIndex",
     SetQuestion = "setQuestion",
     AddUserAnswer = "addUserAnswer",
+    SetThisPlayer = "setThisPlayer"
 }
 
 // Step 3 - Define Action Interface to describe actionAction & payload if needed
@@ -73,30 +85,33 @@ export interface GameAction {
 
 // Step 4 - Export Action Creators functions that gets payload and return relevant Action
 
-export function setGameAction(
-    game: GameModel
-): GameAction {
+export function setGameAction(game: GameModel): GameAction {
     return {
         type: GameActionType.SetGame,
         payload: game
     };
 }
 
+export function setThisPlayerAction(player: PlayerModel): GameAction {
+    return {
+        type: GameActionType.SetThisPlayer,
+        payload: player
+    };
+}
+
 export function setNextQuestionAction(): GameAction {
     return {
         type: GameActionType.SetNextQuestion
-    }
+    };
 }
 
 export function checkLastQuestionAction(): GameAction {
     return {
         type: GameActionType.CheckLastQuestion
-    }
+    };
 }
 
-export function setQuestionAction(
-    question: QuestionModel
-): GameAction {
+export function setQuestionAction(question: QuestionModel): GameAction {
     return {
         type: GameActionType.SetQuestion,
         payload: question
@@ -109,11 +124,8 @@ export function incrementIndexAction() {
     }
 }
 
-export function addUserAnswerAction(
-    questionIndex: number,
-    answerText: string,
-    isCorrect: boolean
-): GameAction {
+export function addUserAnswerAction(questionIndex: number, answerText: string, isCorrect: boolean):
+    GameAction {
     const userAnswer: UserAnswerModel = {
         questionIndex: questionIndex,
         answerText: answerText,
@@ -123,7 +135,7 @@ export function addUserAnswerAction(
     return {
         type: GameActionType.AddUserAnswer,
         payload: userAnswer
-    }
+    };
 }
 
 // Step 5 - Reducer function perform the required action
@@ -140,7 +152,8 @@ export function GameReducer(
             newState.question = newState.game?.questions?.at(0);
             newState.questionIndex = 1;
             newState.isLastQuestion = newState.game?.questionsPerRound === 1;
-            newState.userAnswers = []
+            newState.userAnswers = [];
+            newState.thisPlayer = initThisPlayer(newState.thisPlayer);
             break;
         case GameActionType.SetNextQuestion: //full state managemnet for next question transition. TODO: does not handle improper calls gracfully
             if (!newState.isLastQuestion) {
@@ -162,7 +175,9 @@ export function GameReducer(
         case GameActionType.IncrementIndex:
             newState.questionIndex++;
             break;
-
+        case GameActionType.SetThisPlayer:
+            newState.thisPlayer = action.payload;
+            break;
     }
     localStorage.setItem("persistentState", JSON.stringify(newState));
 
