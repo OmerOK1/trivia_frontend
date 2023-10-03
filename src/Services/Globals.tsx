@@ -1,4 +1,5 @@
 class Globals {
+
 }
 
 class DevelopmentGlobals extends Globals {

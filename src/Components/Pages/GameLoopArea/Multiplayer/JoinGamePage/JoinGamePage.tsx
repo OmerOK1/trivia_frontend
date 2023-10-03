@@ -25,6 +25,8 @@ function JoinGamePage(): JSX.Element {
         await getGameAPI(gameId)
             .then((res) => {
                 store.dispatch(setGameAction(res.data));
+                console.log("User: " + store.getState().gameReducer.thisPlayer);
+                console.log("Game: " + store.getState().gameReducer.game);
             }).catch((error) => {
                 console.error(error);
             })
