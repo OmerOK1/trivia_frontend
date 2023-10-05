@@ -3,8 +3,9 @@ class Globals {
 }
 
 class DevelopmentGlobals extends Globals {
+    host: string = "10.0.0.23";
     public urls = {
-        customer: "http://localhost:8080/customers/",
+        customer: `http://${this.host}:8080/customers/`,
 
     }
 }

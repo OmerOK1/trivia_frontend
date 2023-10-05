@@ -33,7 +33,8 @@ const getInitialStateFromLocalStorage = (): GameState => {
 function initThisPlayer(player: any): PlayerModel {
     return ('playerId' in player) ? player : {
         playerId: "PLACEHOLDER ID - SET THIS IN SERVER", //TODO: set in server using ip and user agent
-        name: "PLACEHOLDER NAME - SET THIS" // TODO: set in join page
+        name: "PLACEHOLDER NAME - SET THIS", // TODO: set in join page
+        host: false
     };
 }
 
@@ -153,7 +154,6 @@ export function GameReducer(
             newState.questionIndex = 1;
             newState.isLastQuestion = newState.game?.questionsPerRound === 1;
             newState.userAnswers = [];
-            newState.thisPlayer = initThisPlayer(newState.thisPlayer);
             break;
         case GameActionType.SetNextQuestion: //full state managemnet for next question transition. TODO: does not handle improper calls gracfully
             if (!newState.isLastQuestion) {

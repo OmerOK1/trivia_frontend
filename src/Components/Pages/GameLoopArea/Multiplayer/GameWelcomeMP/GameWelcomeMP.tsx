@@ -7,7 +7,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import QRCode from "react-qr-code";
 
-function GameWelcomeMP(): JSX.Element {
+function GameWelcomeMP(){
     const messages = [
         "Welcome to the trivia challenge! Get ready to test your knowledge.",
         "The trivia adventure is about to begin. Are you up for the challenge?",
@@ -26,10 +26,12 @@ function GameWelcomeMP(): JSX.Element {
     return (
         <Container maxWidth={false} sx={{ height: '60vh' , display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly', alignItems: 'center' }} >
             <CssBaseline />
-            <Typography component="h1" variant="h6" >Scan Here To Join Game!</Typography>
-            <QRCode value={store.getState().gameReducer.game?.url!} bgColor="transparent" />
+           {store.getState().gameReducer.thisPlayer.host && <>
+           <Typography component="h1" variant="h6">Scan Here To Join Game!</Typography>
+           <QRCode value={store.getState().gameReducer.game?.url!} bgColor="transparent" />
+           </>}
             <Typography component="h1" variant="h6" marginBottom={3} marginTop={2}>
-                url: {store.getState().gameReducer.game?.url} <br />
+                {store.getState().gameReducer.game?.url} <br />
                 id: {store.getState().gameReducer.game?.id} <br />
                 Multiplayer
             </Typography>

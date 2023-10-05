@@ -6,7 +6,7 @@ import { GameModel } from '../../../Models/GameModel';
 import { useEffect, useState } from 'react';
 import { addGameApi } from '../../../WebAPI/UserApi';
 import store from '../../../Redux/Store';
-import { setGameAction } from '../../../Redux/GameState';
+import { setGameAction, setThisPlayerAction } from '../../../Redux/GameState';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
@@ -21,63 +21,14 @@ import { publicIpv4 } from 'public-ip';
 
 
 function AddGame(props: { isMP: boolean }) {
-    const nextPage = (props.isMP) ? "/game/multiplayer" : "/game/singleplayer"; // TODO: change left string to MP address once created.
+    const nextPage = (props.isMP) ? "/game/multiplayer" : "/game/singleplayer";
     const navigate = useNavigate();
-    const [inTimeout, setInTimeout] = useState(true);
-    const [domain, setDomain] = useState('http://localhost:3000');
-    const [publicIpAddress, setPublicIpAddress] = useState('');
-
-    // useEffect(() => {
-    //     async function getIp() {
-    //         try {
-    //             const response = await fetch("https://api.ipify.org?format=json");
-    //             const data = await response.json();
-    //             console.log("data: " + data);
-    //             const ipAddress = data.ip;
-    //             setDomain(`http://${ipAddress}:3000`);
-    //         } catch (error) {
-    //             console.error("Error fetching IP address:", error);
-    //         }
-    //     }
-    //     getIp();
-    //     setInTimeout(false);
-    // }, []); 
-
-    // useEffect(() => {
-    //     async function fetchPublicIp() {
-    //       try {
-    //         const ip = await publicIpv4();
-    //         setPublicIpAddress(ip);
-    //         console.log("ip: " + ip)
-    //       } catch (error) {
-    //         console.error('Error fetching public IP address:', error);
-    //       }
-    //     }
-
-    //     fetchPublicIp();
-    //     const ifaces = os.networkInterfaces();
-    //     let localIpAddress = '';
-
-    //     Object.keys(ifaces).forEach((ifname) => {
-    //         ifaces[ifname].forEach((iface: { family: string; internal: any; address: string; }) => {
-    //             if (iface.family === 'IPv4' && !iface.internal) {
-    //                 localIpAddress = iface.address;
-    //             }
-    //         });
-    //     });
-
-    //     console.log('Local IP Address:', localIpAddress);
-
-    // }, []);
-
-
-
-
+    const [inTimeout, setInTimeout] = useState(false);
+    const [domain, setDomain] = useState('http://10.0.0.23:3000');
 
     yup.setLocale({ mixed: { notType: '' } })
     yup.setLocale({ number: { min: (e) => `minimum is ${e.min}` } })
     yup.setLocale({ number: { max: (e) => `maximum is ${e.max}` } })
-
     const schema = yup.object().shape({
         title:
             yup.string().notRequired(),
@@ -93,21 +44,20 @@ function AddGame(props: { isMP: boolean }) {
             yup.string()
     });
 
-
     const { register, handleSubmit, formState: { errors, isDirty, isValid } } =
         useForm<GameModel>({ mode: "all", resolver: yupResolver(schema) });
-
 
     const addGame = async (game: GameModel) => {
         if (inTimeout) { return; }
         setInTimeout(true);
+        store.dispatch(setThisPlayerAction({name: "host", host: true, playerId: "host"}));
         game.isMultiplayer = props.isMP;
         await addGameApi(game).then((res) => {
             res.data.url = domain + '/' + res.data.url; //TODO: generlize hard coded domain
             store.dispatch(setGameAction(res.data));
             console.log(store.getState().gameReducer);
             navigate(nextPage);
-        })
+        }).catch((err)=>console.log("addGame promise broken: " + err));
         setTimeout(() => setInTimeout(false), 3000);
     }
 
@@ -205,8 +155,49 @@ function AddGame(props: { isMP: boolean }) {
             </Container>
         </Container >
     );
-
-
 }
-
 export default AddGame;
+
+
+    // useEffect(() => {
+    //     async function getIp() {
+    //         try {
+    //             const response = await fetch("https://api.ipify.org?format=json");
+    //             const data = await response.json();
+    //             console.log("data: " + data);
+    //             const ipAddress = data.ip;
+    //             setDomain(`http://${ipAddress}:3000`);
+    //         } catch (error) {
+    //             console.error("Error fetching IP address:", error);
+    //         }
+    //     }
+    //     getIp();
+    //     setInTimeout(false);
+    // }, []); 
+
+    // useEffect(() => {
+    //     async function fetchPublicIp() {
+    //       try {
+    //         const ip = await publicIpv4();
+    //         setPublicIpAddress(ip);
+    //         console.log("ip: " + ip)
+    //       } catch (error) {
+    //         console.error('Error fetching public IP address:', error);
+    //       }
+    //     }
+
+    //     fetchPublicIp();
+    //     const ifaces = os.networkInterfaces();
+    //     let localIpAddress = '';
+
+    //     Object.keys(ifaces).forEach((ifname) => {
+    //         ifaces[ifname].forEach((iface: { family: string; internal: any; address: string; }) => {
+    //             if (iface.family === 'IPv4' && !iface.internal) {
+    //                 localIpAddress = iface.address;
+    //             }
+    //         });
+    //     });
+
+    //     console.log('Local IP Address:', localIpAddress);
+
+    // }, []);
