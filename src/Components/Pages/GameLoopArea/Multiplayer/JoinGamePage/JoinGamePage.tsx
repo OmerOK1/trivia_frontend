@@ -14,14 +14,14 @@ import TextField from "@mui/material/TextField";
 import { useForm } from "react-hook-form";
 import { PlayerModel } from "../../../../../Models/PlayerModel";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button } from "@mui/material";
+import { Button, FormControl } from "@mui/material";
 
 function JoinGamePage(): JSX.Element {
     const param = useParams();
     const gameId = Number(param.gameid);
     const navigate = useNavigate();
-    const [localPlayer, setLocalPlayer] = useState(store.getState().gameReducer.thisPlayer || '');
-    const [localGame, setLocalGame] = useState<GameModel>(store.getState().gameReducer.game || {});
+    const [localPlayer, setLocalPlayer] = useState<PlayerModel>(store.getState().gameReducer.thisPlayer);
+    const [localGame, setLocalGame] = useState<GameModel>(store.getState().gameReducer.game!);
     const [validatedState, setValidatedState] = useState(false);
 
     useEffect(() => {
@@ -32,12 +32,14 @@ function JoinGamePage(): JSX.Element {
 
 
     async function handleNewGame() {
+        console.log("arrived handle new game");
         await joinGameApi(gameId)
             .then((res) => {
                 setLocalGame(res.data.game);
                 setLocalPlayer(res.data.player);
-                store.dispatch(setGameAction(localGame));
-                store.dispatch(setThisPlayerAction(localPlayer));
+                store.dispatch(setGameAction(res.data.game));
+                store.dispatch(setThisPlayerAction(res.data.player));
+                console.log("res.data " +res.data)
                 setValidatedState(true);
             }).catch((error) => {
                 setLocalGame({ title: "Can't fetch game: " + error });
@@ -54,11 +56,14 @@ function JoinGamePage(): JSX.Element {
 
 
     const handleJoinButton = async (res: PlayerModel) => {
+        console.log("player: " + res.name);
+        console.log("player id: " + localPlayer.playerId);
         if (!validatedState) return;
         setValidatedState(false);
         if (localPlayer.name !== res.name) {
-            setLocalPlayer({ playerId: localPlayer.playerId, host: localPlayer.host, answers: localPlayer.answers, name: res.name });
-            await updatePlayerApi(localPlayer, gameId).then((res)=> {
+            let currentPlayer: PlayerModel = { playerId: localPlayer.playerId, host: localPlayer.host, answers: localPlayer.answers, name: res.name };
+            setLocalPlayer(currentPlayer);
+            await updatePlayerApi(currentPlayer, gameId).then((res)=> {
                 store.dispatch(setThisPlayerAction(res.data));
                 navigate("/game/multiplayer");
             });
@@ -75,7 +80,9 @@ function JoinGamePage(): JSX.Element {
                 {(validatedState && 'title' in localGame) ? localGame.title : 'no game yet, validatedState: ' + validatedState + ' game: ' + localGame?.title}
                 {" game id: " + gameId}
             </Typography>
-            <Box onSubmit={handleSubmit(handleJoinButton)} >
+            <Box>
+            <form onSubmit={handleSubmit(handleJoinButton)} >
+            
                 <TextField sx={{ mt: 2 }}
                     margin="normal"
                     fullWidth
@@ -86,7 +93,8 @@ function JoinGamePage(): JSX.Element {
                     color="secondary"
                     {...register("name")}
                 />
-                <Button type='submit' variant="contained" size="large" disabled={!validatedState} color='primary' sx={{ mt: 2 }} >Join Game</Button>
+            <Button type='submit' variant="contained" size="large" disabled={!validatedState} color='primary' sx={{ mt: 2 }} >Join Game</Button>
+            </form>
             </Box>
         </Container>
 

@@ -7,7 +7,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import QRCode from "react-qr-code";
 
-function GameWelcomeMP(){
+function LobbyPage(){
     const messages = [
         "Welcome to the trivia challenge! Get ready to test your knowledge.",
         "The trivia adventure is about to begin. Are you up for the challenge?",
@@ -47,4 +47,4 @@ function GameWelcomeMP(){
     )
 }
 
-export default GameWelcomeMP;
+export default LobbyPage;

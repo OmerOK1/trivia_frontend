@@ -17,10 +17,10 @@ export async function getGameApi(gameId: number) {
 }
 
 export async function updatePlayerApi(player: PlayerModel, gameId: number) {
-    return await axios.put<PlayerModel>(customerURL+"games/update", player, {params: {id: gameId}});
+    return await axios.put<PlayerModel>(customerURL+"games/update", player, {params: {gameId: gameId}});
 }
 
 export async function joinGameApi(gameId: number) {
-    return await axios.get<JoinResponseModel>(customerURL+"games/join", {params: {gameId}});
+    return await axios.get<JoinResponseModel>(customerURL+"games/join", {params: {gameId}}); //TODO not working properly
 }
 

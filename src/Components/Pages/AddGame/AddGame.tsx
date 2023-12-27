@@ -18,13 +18,14 @@ import { Difficulty } from '../../../Models/Enums/Difficulty';
 import { Category } from '../../../Models/Enums/Category';
 import { LayoutEnum } from '../../../Models/Enums/LayoutEnum';
 import { publicIpv4 } from 'public-ip';
+import globals from '../../../Services/Globals';
 
 
 function AddGame(props: { isMP: boolean }) {
     const nextPage = (props.isMP) ? "/game/multiplayer" : "/game/singleplayer";
     const navigate = useNavigate();
     const [inTimeout, setInTimeout] = useState(false);
-    const [domain, setDomain] = useState('http://10.0.0.23:3000');
+    const [domain, setDomain] = useState('http://'+globals.getHost+':3000');
 
     yup.setLocale({ mixed: { notType: '' } })
     yup.setLocale({ number: { min: (e) => `minimum is ${e.min}` } })
