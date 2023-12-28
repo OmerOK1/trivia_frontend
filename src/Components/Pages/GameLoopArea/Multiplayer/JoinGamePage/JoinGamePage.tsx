@@ -35,11 +35,15 @@ function JoinGamePage(): JSX.Element {
         console.log("arrived handle new game");
         await joinGameApi(gameId)
             .then((res) => {
-                setLocalGame(res.data.game);
+                setLocalGame(res.data.game); //TODO: clean up redundent state
                 setLocalPlayer(res.data.player);
                 store.dispatch(setGameAction(res.data.game));
                 store.dispatch(setThisPlayerAction(res.data.player));
-                console.log("res.data " +res.data)
+                console.log("player recieved from server: \n"
+                +"name: " +res.data.player.name +"\n"
+                +"id: " + res.data.player.playerId + "\n"
+                +"host: " + res.data.player.host + "\n"
+                +"asnwers?: " + res.data.player.answers)
                 setValidatedState(true);
             }).catch((error) => {
                 setLocalGame({ title: "Can't fetch game: " + error });
@@ -56,6 +60,7 @@ function JoinGamePage(): JSX.Element {
 
 
     const handleJoinButton = async (res: PlayerModel) => {
+        console.log("join button pressed");
         console.log("player: " + res.name);
         console.log("player id: " + localPlayer.playerId);
         if (!validatedState) return;

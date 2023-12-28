@@ -26,21 +26,31 @@ function LobbyPage(){
     return (
         <Container maxWidth={false} sx={{ height: '60vh' , display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly', alignItems: 'center' }} >
             <CssBaseline />
+
            {store.getState().gameReducer.thisPlayer.host && <>
-           <Typography component="h1" variant="h6">Scan Here To Join Game!</Typography>
-           <QRCode value={store.getState().gameReducer.game?.url!} bgColor="transparent" />
+           
+                <Typography component="h1" variant="h6">Scan Here To Join Game!</Typography>
+                <QRCode value={store.getState().gameReducer.game?.url!} bgColor="transparent" />
+
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '35%' }} >
+                    <CustomLink to="">Start Game</CustomLink>
+                </Box>
+           
            </>}
+
             <Typography component="h1" variant="h6" marginBottom={3} marginTop={2}>
                 {store.getState().gameReducer.game?.url} <br />
                 id: {store.getState().gameReducer.game?.id} <br />
                 Multiplayer
             </Typography>
+
             <Typography component="h1" variant="h5" marginBottom={6}>
                 {randomMessage}
             </Typography>
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '35%' }} >
-                <CustomLink to="">Let's Play!</CustomLink>
-            </Box>
+
+            {!store.getState().gameReducer.thisPlayer.host && <>
+                <Typography component="h1" variant="h6">waiting for host to start the game...</Typography>
+            </>}
         </Container>
 
 
