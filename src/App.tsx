@@ -19,7 +19,6 @@ function App() {
         </Box>
         <Routing />
         <Outlet />
-        <footer>footer</footer>
       </Container>
     </div>
   );

@@ -87,7 +87,7 @@ function AddGame(props: { isMP: boolean }) {
                         <TextField sx={{ mt: 2 }}
                             {...register("questionsPerRound")}
                             fullWidth
-                            defaultValue={10}
+                            defaultValue={3}
                             error={!!errors.questionsPerRound}
                             helperText={errors.questionsPerRound?.message}
                             id="questions-per-round-field"
@@ -103,7 +103,7 @@ function AddGame(props: { isMP: boolean }) {
                         <FormControl sx={{ mt: 2 }} fullWidth>
                             <TextField
                                 color="success" variant="outlined" label="Time Limit"
-                                select SelectProps={{ native: true }} {...register("answerTimeLimit")} defaultValue={90}
+                                select SelectProps={{ native: true }} {...register("answerTimeLimit")} defaultValue={30}
                                 inputProps={{ name: 'answerTimeLimit', id: 'answer-time-limit' }}>
                                 <option value={90}>90 seconds</option>
                                 <option value={60}>60 seconds</option>
@@ -114,7 +114,7 @@ function AddGame(props: { isMP: boolean }) {
                         <FormControl sx={{ mt: 2 }} fullWidth>
                             <TextField
                                 color="success" variant="outlined" label="Category"
-                                {...register("category")} defaultValue={Category.ANY} select SelectProps={{ native: true }}
+                                {...register("category")} defaultValue={"GENERAL_KNOWLEDGE"} select SelectProps={{ native: true }}
                                 error={!!errors.category} helperText={errors.category?.message}
                             >
                                 { }

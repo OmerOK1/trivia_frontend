@@ -15,6 +15,8 @@ export function QuestionPage() {
     const [isLast, setIsLast] = useState<boolean>(store.getState().gameReducer.isLastQuestion);
     const [answered, setAnswered] = useState(false);
     const [inTimeout, setInTimeout] = useState(false);
+    const gameLength = store.getState().gameReducer.game?.questionsPerRound;
+    const [questionIndex, setQuestionIndex] = useState<number>(store.getState().gameReducer.questionIndex);
     const [buttonsSelection, setButtonsSelection] = useState<{
         button1: boolean;
         button2: boolean;
@@ -41,6 +43,7 @@ export function QuestionPage() {
         store.dispatch(setNextQuestionAction());
         setCurrentQuestion(store.getState().gameReducer.question!);
         setIsLast(store.getState().gameReducer.isLastQuestion);
+        setQuestionIndex(store.getState().gameReducer.questionIndex) //could be optimised to simple number if needed, but this should avoid more bugs
         setTimeout(() => setInTimeout(false), 1500);
     }
 
@@ -76,6 +79,7 @@ export function QuestionPage() {
 
     return (
         <div className="question-page">
+            <h2>QUESTION {questionIndex}/{gameLength}</h2>
             <h1>{currentQuestion?.questionBody}</h1>
             <Box sx={{ flexGrow: 1 }}>
                 <Grid container spacing={{ xs: 5, md: 5 }} columns={{ xs: 3, sm: 6 }}>
