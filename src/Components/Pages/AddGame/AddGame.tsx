@@ -108,6 +108,7 @@ function AddGame(props: { isMP: boolean }) {
                                 <option value={90}>90 seconds</option>
                                 <option value={60}>60 seconds</option>
                                 <option value={30}>30 seconds</option>
+                                <option value={10}>10 seconds</option>
                             </TextField>
                         </FormControl>
 

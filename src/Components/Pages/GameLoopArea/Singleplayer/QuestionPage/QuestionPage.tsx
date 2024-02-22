@@ -8,6 +8,7 @@ import "./QuestionPage.css"
 import Box from "@mui/material/Box";
 import Grid from '@mui/material/Unstable_Grid2';
 import Button from '@mui/material/Button';
+import Timer from "../../../../Utils/Timer/Timer";
 
 
 export function QuestionPage() {
@@ -17,6 +18,8 @@ export function QuestionPage() {
     const [inTimeout, setInTimeout] = useState(false);
     const gameLength = store.getState().gameReducer.game?.questionsPerRound;
     const [questionIndex, setQuestionIndex] = useState<number>(store.getState().gameReducer.questionIndex);
+    const getTimeLimit = store.getState().gameReducer.game?.answerTimeLimit;
+    const [timeOver, setTimeOver] = useState(false);
     const [buttonsSelection, setButtonsSelection] = useState<{
         button1: boolean;
         button2: boolean;
@@ -34,6 +37,7 @@ export function QuestionPage() {
         if (inTimeout) return;
         setInTimeout(true);
         setAnswered(false);
+        setTimeOver(false);
         setButtonsSelection({
             button1: false,
             button2: false,
@@ -43,7 +47,8 @@ export function QuestionPage() {
         store.dispatch(setNextQuestionAction());
         setCurrentQuestion(store.getState().gameReducer.question!);
         setIsLast(store.getState().gameReducer.isLastQuestion);
-        setQuestionIndex(store.getState().gameReducer.questionIndex) //could be optimised to simple number if needed, but this should avoid more bugs
+        setQuestionIndex(store.getState().gameReducer.questionIndex); //could be optimised to simple number if needed, but this should avoid more bugs
+        
         setTimeout(() => setInTimeout(false), 1500);
     }
 
@@ -77,6 +82,24 @@ export function QuestionPage() {
         return 4;
     }
 
+    const handleTimeOver = () => {
+        if (answered || timeOver) return;
+    
+        setTimeOver(true);
+    
+        const correctNumber = correctAnswerNumber();
+        store.dispatch(addUserAnswerAction(store.getState().gameReducer.questionIndex - 1, "", false));
+        setButtonsSelection((prevSelection) => ({
+            ...prevSelection,
+            [`button${correctNumber}`]: true
+        }));
+        setTimeout(() => {
+            setInTimeout(false);
+            handleNextQuestion();
+        }, 1500);
+    };
+    
+
     return (
         <div className="question-page">
             <h2>QUESTION {questionIndex}/{gameLength}</h2>
@@ -93,11 +116,19 @@ export function QuestionPage() {
                     ))}
                 </Grid>
             </Box>
-            {answered === true && (isLast ? 
-            (<CustomLink to="/game/singleplayer/review">finish</CustomLink>) : 
-            <CustomButton className="menu-button-gray" name="Continue" handleClick={() => handleNextQuestion()} />
-        )
-    }
+            {(answered === false) && (!timeOver) && <Timer key={questionIndex} timeLimit={getTimeLimit!} onTimeout={handleTimeOver} />}
+            <Box width="20vw" >
+            
+                {answered === true && (isLast ? 
+                (<CustomLink to="/game/singleplayer/review">finish</CustomLink>) : 
+                <CustomButton className="menu-button-gray" name="Continue" handleClick={() => handleNextQuestion()} />
+                    )
+                }
+                {timeOver && (isLast ? 
+                (<CustomLink to="/game/singleplayer/review">finish</CustomLink>) : 
+                <CustomButton className="menu-button-red" name="Continue" handleClick={() => handleNextQuestion()} />
+            )}
+            </Box >
         </div >
     );
 }
