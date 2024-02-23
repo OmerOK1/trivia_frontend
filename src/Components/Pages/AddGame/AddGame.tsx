@@ -17,7 +17,6 @@ import Button from '@mui/material/Button';
 import { Difficulty } from '../../../Models/Enums/Difficulty';
 import { Category } from '../../../Models/Enums/Category';
 import { LayoutEnum } from '../../../Models/Enums/LayoutEnum';
-import { publicIpv4 } from 'public-ip';
 import globals from '../../../Services/Globals';
 
 
@@ -42,7 +41,7 @@ function AddGame(props: { isMP: boolean }) {
         answerTimeLimit:
             yup.number().integer(),
         layout:
-            yup.string()
+            yup.string().default("COMING_SOON")
     });
 
     const { register, handleSubmit, formState: { errors, isDirty, isValid } } =
@@ -51,6 +50,7 @@ function AddGame(props: { isMP: boolean }) {
     const addGame = async (game: GameModel) => {
         if (inTimeout) { return; }
         setInTimeout(true);
+        console.log("Game: " + game.layout);
         store.dispatch(setThisPlayerAction({name: "host", host: true, playerId: "host"}));
         game.isMultiplayer = props.isMP;
         await addGameApi(game).then((res) => {
@@ -141,9 +141,9 @@ function AddGame(props: { isMP: boolean }) {
 
                         <FormControl fullWidth sx={{ mt: 2 }}>
                             <TextField
-                                color="info" variant="outlined" label="Visual Theme: Coming Soon" disabled={true}
+                                color="info" variant="outlined" label="Visual Theme: Coming Soon"
                                 {...register("layout")} defaultValue={"COMING_SOON"} select SelectProps={{ native: true }}
-                                error={!!errors.layout} helperText={errors.layout?.message}
+                                error={!!errors.layout} helperText={errors.layout?.message} disabled={true}
                             >
                                 { }
                                 {Object.entries(LayoutEnum).map(([key, val]) => (
@@ -162,47 +162,3 @@ function AddGame(props: { isMP: boolean }) {
     );
 }
 export default AddGame;
-
-
-    // useEffect(() => {
-    //     async function getIp() {
-    //         try {
-    //             const response = await fetch("https://api.ipify.org?format=json");
-    //             const data = await response.json();
-    //             console.log("data: " + data);
-    //             const ipAddress = data.ip;
-    //             setDomain(`http://${ipAddress}:3000`);
-    //         } catch (error) {
-    //             console.error("Error fetching IP address:", error);
-    //         }
-    //     }
-    //     getIp();
-    //     setInTimeout(false);
-    // }, []); 
-
-    // useEffect(() => {
-    //     async function fetchPublicIp() {
-    //       try {
-    //         const ip = await publicIpv4();
-    //         setPublicIpAddress(ip);
-    //         console.log("ip: " + ip)
-    //       } catch (error) {
-    //         console.error('Error fetching public IP address:', error);
-    //       }
-    //     }
-
-    //     fetchPublicIp();
-    //     const ifaces = os.networkInterfaces();
-    //     let localIpAddress = '';
-
-    //     Object.keys(ifaces).forEach((ifname) => {
-    //         ifaces[ifname].forEach((iface: { family: string; internal: any; address: string; }) => {
-    //             if (iface.family === 'IPv4' && !iface.internal) {
-    //                 localIpAddress = iface.address;
-    //             }
-    //         });
-    //     });
-
-    //     console.log('Local IP Address:', localIpAddress);
-
-    // }, []);
