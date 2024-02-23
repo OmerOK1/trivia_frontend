@@ -1,4 +1,5 @@
 export enum LayoutEnum {
     NORMAL = "normal",
-    DARK = "dark"
+    DARK = "dark",
+    COMING_SOON = "Themes: Coming Soon"
 }

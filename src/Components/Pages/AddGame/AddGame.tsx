@@ -82,6 +82,7 @@ function AddGame(props: { isMP: boolean }) {
                             fullWidth
                             label="Game Title"
                             type="text"
+                            defaultValue={"My Trivia Mania"}
                             {...register("title")}
                         />
                         <TextField sx={{ mt: 2 }}
@@ -128,23 +129,25 @@ function AddGame(props: { isMP: boolean }) {
                         <FormControl sx={{ mt: 2 }} fullWidth >
                             <TextField
                                 color="success" variant="outlined" label="Difficulty"
-                                {...register("difficulty")} defaultValue={Difficulty.ANY} select SelectProps={{ native: true }}
+                                {...register("difficulty")} defaultValue={"easy"} select SelectProps={{ native: true }}
                                 error={!!errors.difficulty} helperText={errors.difficulty?.message}
                             >
-                                {Object.keys(Difficulty).map((difficultyKey) => (
-                                    <option key={difficultyKey} value={difficultyKey}>{difficultyKey}</option>
+                                { }
+                                {Object.entries(Difficulty).map(([key, val]) => (
+                                    <option key={key} value={key}>{val}</option>
                                 ))}
                             </TextField>
                         </FormControl>
 
                         <FormControl fullWidth sx={{ mt: 2 }}>
                             <TextField
-                                color="success" variant="outlined" label="Layout"
-                                {...register("layout")} defaultValue={LayoutEnum.NORMAL} select SelectProps={{ native: true }}
+                                color="info" variant="outlined" label="Visual Theme: Coming Soon" disabled={true}
+                                {...register("layout")} defaultValue={"COMING_SOON"} select SelectProps={{ native: true }}
                                 error={!!errors.layout} helperText={errors.layout?.message}
                             >
-                                {Object.keys(LayoutEnum).map((layoutKey) => (
-                                    <option key={layoutKey} value={layoutKey}>{layoutKey}</option>
+                                { }
+                                {Object.entries(LayoutEnum).map(([key, val]) => (
+                                    <option key={key} value={key}>{val}</option>
                                 ))}
                             </TextField>
                         </FormControl>
