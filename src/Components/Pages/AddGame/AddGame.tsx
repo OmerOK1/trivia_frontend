@@ -104,7 +104,7 @@ function AddGame(props: { isMP: boolean }) {
                         <FormControl sx={{ mt: 2 }} fullWidth>
                             <TextField
                                 color="success" variant="outlined" label="Time Limit"
-                                select SelectProps={{ native: true }} {...register("answerTimeLimit")} defaultValue={30}
+                                select SelectProps={{ native: true }} {...register("answerTimeLimit")} defaultValue={10}
                                 inputProps={{ name: 'answerTimeLimit', id: 'answer-time-limit' }}>
                                 <option value={90}>90 seconds</option>
                                 <option value={60}>60 seconds</option>
@@ -153,7 +153,7 @@ function AddGame(props: { isMP: boolean }) {
                         </FormControl>
 
                         <Button type="submit" id='submit-button' variant="contained" size="large" disabled={!isValid} color='primary' sx={{ mt: 2 }}>
-                            Start Game
+                            Confirm
                         </Button>
                     </ Box>
                 </Box>
