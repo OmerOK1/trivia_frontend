@@ -18,6 +18,7 @@ import { Difficulty } from '../../../Models/Enums/Difficulty';
 import { Category } from '../../../Models/Enums/Category';
 import { LayoutEnum } from '../../../Models/Enums/LayoutEnum';
 import globals from '../../../Services/Globals';
+import { GameMode } from '../../../Models/Enums/GameMode';
 
 
 function AddGame(props: { isMP: boolean }) {
@@ -53,8 +54,9 @@ function AddGame(props: { isMP: boolean }) {
         console.log("Game: " + game.layout);
         store.dispatch(setThisPlayerAction({name: "host", host: true, playerId: "host"}));
         game.isMultiplayer = props.isMP;
+        game.gameMode = GameMode.CLASSIC; //TODO: change after other game modes are implemented
         await addGameApi(game).then((res) => {
-            res.data.url = domain + '/' + res.data.url; //TODO: generlize hard coded domain
+            res.data.url = domain + '/' + res.data.url;
             store.dispatch(setGameAction(res.data));
             console.log(store.getState().gameReducer);
             navigate(nextPage);

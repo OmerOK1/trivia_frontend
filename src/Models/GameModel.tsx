@@ -1,5 +1,6 @@
 import { Category } from "./Enums/Category";
 import { Difficulty } from "./Enums/Difficulty";
+import { GameMode } from "./Enums/GameMode";
 import { LayoutEnum } from "./Enums/LayoutEnum";
 import { PlayerModel } from "./PlayerModel";
 import { QuestionModel } from "./QuestionModel";
@@ -16,4 +17,5 @@ export interface GameModel {
     questions?: QuestionModel[];
     isMultiplayer?: boolean;
     players?: PlayerModel[];
+    gameMode?: GameMode;
 }
