@@ -64,9 +64,11 @@ export function QuestionPage() {
         if (answered) return;
         if (![1, 2, 3, 4].includes(answerNumber)) return;
         setAnswered(true);
+
         const correctNumber = correctAnswerNumber();
         const isCorrect = answerNumber === correctNumber;
-        store.dispatch(addUserAnswerAction(store.getState().gameReducer.questionIndex - 1, answerText, isCorrect))
+        store.dispatch(addUserAnswerAction(store.getState().gameReducer.questionIndex - 1, answerText, isCorrect));
+        
         setButtonsSelection((prevSelection) => ({
             ...prevSelection,
             [`button${answerNumber}`]: true,

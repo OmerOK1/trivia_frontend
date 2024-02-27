@@ -19,11 +19,10 @@ import { Category } from '../../../Models/Enums/Category';
 import { LayoutEnum } from '../../../Models/Enums/LayoutEnum';
 import globals from '../../../Services/Globals';
 import { GameMode } from '../../../Models/Enums/GameMode';
-import { isEnumMember } from 'typescript';
 
 
-function AddGame(props: { isMP: boolean }) {
-    const nextPage = (props.isMP) ? "/game/multiplayer" : "/game/singleplayer";
+function AddGameSurvival() {
+    const nextPage = ""; //TODO
     const navigate = useNavigate();
     const [inTimeout, setInTimeout] = useState(false);
     const [domain, setDomain] = useState('http://'+globals.getHost+':3000');
@@ -36,8 +35,6 @@ function AddGame(props: { isMP: boolean }) {
             yup.string().notRequired(),
         category:
             yup.string().required("please enter a valid category"),
-        difficulty:
-            yup.string().required("please enter a valid difficulty level"),
         questionsPerRound:
             yup.number().integer("please use Integers.").min(1).max(10).required("insert an amount of questions between 1 - 10 only, please."),
         answerTimeLimit:
@@ -52,10 +49,10 @@ function AddGame(props: { isMP: boolean }) {
     const addGame = async (game: GameModel) => {
         if (inTimeout) { return; }
         setInTimeout(true);
-        console.log("Game: " + game.layout);
+        
         store.dispatch(setThisPlayerAction({name: "host", host: true, playerId: "host"}));
-        game.isMultiplayer = props.isMP;
-        game.gameMode = GameMode.CLASSIC; //TODO: change after other game modes are implemented
+        game.isMultiplayer = false;
+        game.gameMode = GameMode.SURVIVAL; //TODO: change after other game modes are implemented
         await addGameApi(game).then((res) => {
             res.data.url = domain + '/' + res.data.url;
             store.dispatch(setGameAction(res.data));
@@ -63,6 +60,12 @@ function AddGame(props: { isMP: boolean }) {
             navigate(nextPage);
         }).catch((err)=>console.log("addGame promise broken: " + err));
         setTimeout(() => setInTimeout(false), 3000);
+    }
+
+    function handleGameValues(game: GameModel): GameModel {
+        game.isMultiplayer = false;
+        game.gameMode = GameMode.SURVIVAL;
+        return game;
     }
 
     return (
@@ -129,19 +132,6 @@ function AddGame(props: { isMP: boolean }) {
                             </TextField>
                         </FormControl>
 
-                        <FormControl sx={{ mt: 2 }} fullWidth >
-                            <TextField
-                                color="success" variant="outlined" label="Difficulty"
-                                {...register("difficulty")} defaultValue={"easy"} select SelectProps={{ native: true }}
-                                error={!!errors.difficulty} helperText={errors.difficulty?.message}
-                            >
-                                { }
-                                {Object.entries(Difficulty).map(([key, val]) => (
-                                    <option key={key} value={key}>{val}</option>
-                                ))}
-                            </TextField>
-                        </FormControl>
-
                         <FormControl fullWidth sx={{ mt: 2 }}>
                             <TextField
                                 color="info" variant="outlined" label="Visual Theme: Coming Soon"
@@ -164,4 +154,4 @@ function AddGame(props: { isMP: boolean }) {
         </Container >
     );
 }
-export default AddGame;
+export default AddGameSurvival;
