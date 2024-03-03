@@ -61,6 +61,8 @@ export interface GameState {
     isLastQuestion: boolean;
     userAnswers: UserAnswerModel[];
     thisPlayer: PlayerModel;
+    maxLives?: number;
+    lives?: number;
 };
 
 // Initialize the game property with an empty object conforming to GameModel
@@ -75,7 +77,8 @@ export enum GameActionType {
     IncrementIndex = "incrementIndex",
     SetQuestion = "setQuestion",
     AddUserAnswer = "addUserAnswer",
-    SetThisPlayer = "setThisPlayer"
+    SetThisPlayer = "setThisPlayer",
+    SetMaxLives = "setMaxLives"
 }
 
 // Step 3 - Define Action Interface to describe actionAction & payload if needed
@@ -90,6 +93,12 @@ export function setGameAction(game: GameModel): GameAction {
     return {
         type: GameActionType.SetGame,
         payload: game
+    };
+}
+export function setMaxLivesAction(lives: number) {
+    return {
+        type: GameActionType.SetMaxLives,
+        payload: lives
     };
 }
 
@@ -154,6 +163,10 @@ export function GameReducer(
             newState.questionIndex = 1;
             newState.isLastQuestion = newState.game?.questionsPerRound === 1;
             newState.userAnswers = [];
+            break;
+        case GameActionType.SetMaxLives: 
+            newState.maxLives = action.payload;
+            newState.lives = action.payload;
             break;
         case GameActionType.SetNextQuestion: //full state managemnet for next question transition. TODO: does not handle improper calls gracfully
             if (!newState.isLastQuestion) {

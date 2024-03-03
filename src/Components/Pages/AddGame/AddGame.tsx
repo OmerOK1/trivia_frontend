@@ -19,7 +19,6 @@ import { Category } from '../../../Models/Enums/Category';
 import { LayoutEnum } from '../../../Models/Enums/LayoutEnum';
 import globals from '../../../Services/Globals';
 import { GameMode } from '../../../Models/Enums/GameMode';
-import { isEnumMember } from 'typescript';
 
 
 function AddGame(props: { isMP: boolean }) {
@@ -52,8 +51,8 @@ function AddGame(props: { isMP: boolean }) {
     const addGame = async (game: GameModel) => {
         if (inTimeout) { return; }
         setInTimeout(true);
-        console.log("Game: " + game.layout);
         store.dispatch(setThisPlayerAction({name: "host", host: true, playerId: "host"}));
+        
         game.isMultiplayer = props.isMP;
         game.gameMode = GameMode.CLASSIC; //TODO: change after other game modes are implemented
         await addGameApi(game).then((res) => {

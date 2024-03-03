@@ -6,7 +6,7 @@ import { GameModel } from '../../../Models/GameModel';
 import { useEffect, useState } from 'react';
 import { addGameApi } from '../../../WebAPI/UserApi';
 import store from '../../../Redux/Store';
-import { setGameAction, setThisPlayerAction } from '../../../Redux/GameState';
+import { setGameAction, setMaxLivesAction, setThisPlayerAction } from '../../../Redux/GameState';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
@@ -19,6 +19,7 @@ import { Category } from '../../../Models/Enums/Category';
 import { LayoutEnum } from '../../../Models/Enums/LayoutEnum';
 import globals from '../../../Services/Globals';
 import { GameMode } from '../../../Models/Enums/GameMode';
+import { SurvivalGameFormModel } from '../../../Models/SurvivalGameFormModel';
 
 
 function AddGameSurvival() {
@@ -30,42 +31,46 @@ function AddGameSurvival() {
     yup.setLocale({ mixed: { notType: '' } })
     yup.setLocale({ number: { min: (e) => `minimum is ${e.min}` } })
     yup.setLocale({ number: { max: (e) => `maximum is ${e.max}` } })
+    
     const schema = yup.object().shape({
         title:
             yup.string().notRequired(),
+        difficulty:
+            yup.string().required("please enter a valid difficulty level"),
         category:
             yup.string().required("please enter a valid category"),
-        questionsPerRound:
-            yup.number().integer("please use Integers.").min(1).max(10).required("insert an amount of questions between 1 - 10 only, please."),
-        answerTimeLimit:
-            yup.number().integer(),
+        lives:
+            yup.number().integer("Can't use non-whole numbers").min(1).max(5).required("Lives can only be between 1-5"),
         layout:
             yup.string().default("COMING_SOON")
     });
 
     const { register, handleSubmit, formState: { errors, isDirty, isValid } } =
-        useForm<GameModel>({ mode: "all", resolver: yupResolver(schema) });
+        useForm<SurvivalGameFormModel>({ mode: "all", resolver: yupResolver(schema) });
 
-    const addGame = async (game: GameModel) => {
+    const addGame = async (game: SurvivalGameFormModel) => {
         if (inTimeout) { return; }
         setInTimeout(true);
         
         store.dispatch(setThisPlayerAction({name: "host", host: true, playerId: "host"}));
-        game.isMultiplayer = false;
-        game.gameMode = GameMode.SURVIVAL; //TODO: change after other game modes are implemented
-        await addGameApi(game).then((res) => {
+
+
+        const toServer = {
+            title: game.title, 
+            category: game.category,
+            difficulty: game.difficulty,
+            layout: game.layout,
+            isMultiplayer: false,
+            gameMode: GameMode.SURVIVAL} as GameModel;
+
+        await addGameApi(toServer).then((res) => {
             res.data.url = domain + '/' + res.data.url;
             store.dispatch(setGameAction(res.data));
+            store.dispatch(setMaxLivesAction(game.lives!))
             console.log(store.getState().gameReducer);
             navigate(nextPage);
         }).catch((err)=>console.log("addGame promise broken: " + err));
         setTimeout(() => setInTimeout(false), 3000);
-    }
-
-    function handleGameValues(game: GameModel): GameModel {
-        game.isMultiplayer = false;
-        game.gameMode = GameMode.SURVIVAL;
-        return game;
     }
 
     return (
@@ -83,6 +88,7 @@ function AddGameSurvival() {
                     </Typography>
 
                     <Box component="form" onSubmit={handleSubmit(addGame)} noValidate sx={{ mt: 1 }}>
+                        
                         <TextField sx={{ mt: 2 }}
                             margin="normal"
                             fullWidth
@@ -91,14 +97,15 @@ function AddGameSurvival() {
                             defaultValue={"My Trivia Mania"}
                             {...register("title")}
                         />
+
                         <TextField sx={{ mt: 2 }}
-                            {...register("questionsPerRound")}
+                            {...register("lives")}
                             fullWidth
                             defaultValue={3}
-                            error={!!errors.questionsPerRound}
-                            helperText={errors.questionsPerRound?.message}
-                            id="questions-per-round-field"
-                            label="Number of Questions"
+                            error={!!errors.lives}
+                            helperText={errors.lives?.message}
+                            id="lives-field"
+                            label="Number of Lives"
                             type="number"
                             InputLabelProps={{
                                 shrink: true,
@@ -106,18 +113,6 @@ function AddGameSurvival() {
                             variant="outlined"
                             color="secondary"
                         />
-
-                        <FormControl sx={{ mt: 2 }} fullWidth>
-                            <TextField
-                                color="success" variant="outlined" label="Time Limit"
-                                select SelectProps={{ native: true }} {...register("answerTimeLimit")} defaultValue={10}
-                                inputProps={{ name: 'answerTimeLimit', id: 'answer-time-limit' }}>
-                                <option value={90}>90 seconds</option>
-                                <option value={60}>60 seconds</option>
-                                <option value={30}>30 seconds</option>
-                                <option value={10}>10 seconds</option>
-                            </TextField>
-                        </FormControl>
 
                         <FormControl sx={{ mt: 2 }} fullWidth>
                             <TextField
