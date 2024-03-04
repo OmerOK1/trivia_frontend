@@ -23,7 +23,7 @@ import { SurvivalGameFormModel } from '../../../Models/SurvivalGameFormModel';
 
 
 function AddGameSurvival() {
-    const nextPage = ""; //TODO
+    const nextPage = "/game/survival"; 
     const navigate = useNavigate();
     const [inTimeout, setInTimeout] = useState(false);
     const [domain, setDomain] = useState('http://'+globals.getHost+':3000');
@@ -35,10 +35,10 @@ function AddGameSurvival() {
     const schema = yup.object().shape({
         title:
             yup.string().notRequired(),
-        difficulty:
-            yup.string().required("please enter a valid difficulty level"),
         category:
             yup.string().required("please enter a valid category"),
+            difficulty:
+            yup.string().default("ANY"),
         lives:
             yup.number().integer("Can't use non-whole numbers").min(1).max(5).required("Lives can only be between 1-5"),
         layout:
@@ -62,6 +62,7 @@ function AddGameSurvival() {
             layout: game.layout,
             isMultiplayer: false,
             gameMode: GameMode.SURVIVAL} as GameModel;
+        console.log("sent game difficulty: " + toServer.difficulty);
 
         await addGameApi(toServer).then((res) => {
             res.data.url = domain + '/' + res.data.url;
