@@ -78,7 +78,8 @@ export enum GameActionType {
     SetQuestion = "setQuestion",
     AddUserAnswer = "addUserAnswer",
     SetThisPlayer = "setThisPlayer",
-    SetMaxLives = "setMaxLives"
+    SetMaxLives = "setMaxLives",
+    SetLives = "setLives"
 }
 
 // Step 3 - Define Action Interface to describe actionAction & payload if needed
@@ -98,6 +99,13 @@ export function setGameAction(game: GameModel): GameAction {
 export function setMaxLivesAction(lives: number) {
     return {
         type: GameActionType.SetMaxLives,
+        payload: lives
+    };
+}
+
+export function setLivesAction(lives: number) {
+    return {
+        type: GameActionType.SetLives,
         payload: lives
     };
 }
@@ -166,6 +174,9 @@ export function GameReducer(
             break;
         case GameActionType.SetMaxLives: 
             newState.maxLives = action.payload;
+            newState.lives = action.payload;
+            break;
+        case GameActionType.SetLives: 
             newState.lives = action.payload;
             break;
         case GameActionType.SetNextQuestion: //full state managemnet for next question transition. TODO: does not handle improper calls gracfully

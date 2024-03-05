@@ -52,10 +52,6 @@ function AddGame(props: { isMP: boolean }) {
         if (inTimeout) { return; }
         setInTimeout(true);
         store.dispatch(setThisPlayerAction({name: "host", host: true, playerId: "host"}));
-
-        const diff:Difficulty = game.difficulty!;
-        console.log("diff: " + diff + "value: " + diff.valueOf())
-        
         game.isMultiplayer = props.isMP;
         game.gameMode = GameMode.CLASSIC; //TODO: change after other game modes are implemented
         console.log("difficulty: " + game.difficulty);

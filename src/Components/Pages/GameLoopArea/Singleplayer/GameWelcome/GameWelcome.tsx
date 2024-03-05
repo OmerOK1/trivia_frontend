@@ -5,6 +5,8 @@ import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import { GameMode } from "../../../../../Models/Enums/GameMode";
+import { useEffect, useState } from "react";
 
 function GameWelcome(): JSX.Element {
     const messages = [
@@ -21,6 +23,19 @@ function GameWelcome(): JSX.Element {
         "The countdown to trivia glory begins now. Buckle up for an exciting knowledge adventure."
       ];
       const randomMessage = messages[ Math.floor(Math.random() * messages.length) ];
+      const gameMode = store.getState().gameReducer.game?.gameMode!;
+      const [nextPage, setNextPage] = useState<string>("")
+
+      useEffect(() => {
+        switch (gameMode) {
+        case GameMode.CLASSIC: 
+        setNextPage("/game/singleplayer/question")
+        break;
+        case GameMode.TIME_TRIAL: setNextPage("")
+        break;
+        case GameMode.SURVIVAL: setNextPage("/game/survival/question")
+        }
+    }, [])
       
 
     return (
@@ -30,11 +45,9 @@ function GameWelcome(): JSX.Element {
                 {randomMessage}
             </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '35%' }} >
-                <CustomLink to="/game/singleplayer/question">Let's Play!</CustomLink>
+                <CustomLink to={nextPage}>Let's Play!</CustomLink>
             </Box>
         </Container>
-
-
     )
 }
 

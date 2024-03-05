@@ -12,6 +12,7 @@ import CustomLink from "../../../../Utils/CustomLink/CustomLink";
 import CheckSharpIcon from '@mui/icons-material/CheckSharp';
 
 function GameReview() {
+  const length = store.getState().gameReducer.questionIndex;
   const game = store.getState().gameReducer.game;
   const userAnswers = store.getState().gameReducer.userAnswers;
   const correctAnswers = useState(store.getState().gameReducer.userAnswers.filter((answer) => answer.isCorrect));
@@ -19,7 +20,7 @@ function GameReview() {
   return (
     <div>
       <TableContainer component={Paper} >
-        <p>Total correct answers: {correctAnswers.length} / {game?.questionsPerRound}</p>
+        <p>Total correct answers: {correctAnswers.length} / {length}</p>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
