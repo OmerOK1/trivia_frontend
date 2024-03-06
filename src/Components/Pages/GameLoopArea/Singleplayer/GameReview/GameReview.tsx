@@ -15,7 +15,9 @@ function GameReview() {
   const length = store.getState().gameReducer.questionIndex;
   const game = store.getState().gameReducer.game;
   const userAnswers = store.getState().gameReducer.userAnswers;
-  const correctAnswers = useState(store.getState().gameReducer.userAnswers.filter((answer) => answer.isCorrect));
+  const [correctAnswers] = useState(userAnswers.filter((answer) => answer.isCorrect));
+  console.log(length); 
+  const answersTableLoop = Array.from({ length }, (_, index) => index);
 
   return (
     <div>
@@ -29,19 +31,23 @@ function GameReview() {
               <TableCell>Result</TableCell>
             </TableRow>
           </TableHead>
+          
           <TableBody>
-            {game?.questions?.map((question, index) => {
+            {answersTableLoop.map((index) => {
+              const question = game?.questions?.[index];
               const userAnswer = userAnswers.find((answer) => answer.questionIndex === index);
               const isCorrect = userAnswer?.isCorrect || false;
+
               return (
                 <TableRow key={index}>
                   <TableCell>{index + 1}</TableCell>
-                  <TableCell>{question.questionBody}</TableCell>
+                  <TableCell>{question!.questionBody}</TableCell>
                   <TableCell>{isCorrect ? <CheckSharpIcon color="success" fontSize="medium" />  : "❌"}</TableCell>
                 </TableRow>
               );
             })}
           </TableBody>
+          
         </Table>
       </TableContainer>
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} marginTop={2} >
