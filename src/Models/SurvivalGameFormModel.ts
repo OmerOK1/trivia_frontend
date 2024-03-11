@@ -5,7 +5,7 @@ import { LayoutEnum } from "./Enums/LayoutEnum";
 import { PlayerModel } from "./PlayerModel";
 import { QuestionModel } from "./QuestionModel";
 
-export interface SurvivalGameFormModel {
+export interface ExpandedGameFormModel {
     id?: number;
     title?: string;
     category?: Category;
@@ -19,4 +19,5 @@ export interface SurvivalGameFormModel {
     players?: PlayerModel[];
     gameMode?: GameMode;
     lives?: number;
+    bonusTime?: number;
 }

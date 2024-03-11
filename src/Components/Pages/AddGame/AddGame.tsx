@@ -75,7 +75,7 @@ function AddGame(props: { isMP: boolean }) {
                         alignItems: 'center',
                     }}>
                     <Typography component="h1" variant="h5" marginBottom={8}>
-                        Game Settings
+                        Game Settings - Classic
                     </Typography>
 
                     <Box component="form" onSubmit={handleSubmit(addGame)} noValidate sx={{ mt: 1 }}>

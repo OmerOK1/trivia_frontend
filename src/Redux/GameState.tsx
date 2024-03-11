@@ -63,6 +63,9 @@ export interface GameState {
     thisPlayer: PlayerModel;
     maxLives?: number;
     lives?: number;
+    bonusTime?: number;
+    timeLimit?: number;
+    timeRemaining?: number;
 };
 
 // Initialize the game property with an empty object conforming to GameModel
@@ -79,7 +82,10 @@ export enum GameActionType {
     AddUserAnswer = "addUserAnswer",
     SetThisPlayer = "setThisPlayer",
     SetMaxLives = "setMaxLives",
-    SetLives = "setLives"
+    SetLives = "setLives",
+    SetBonusTime = "setBonusTime",
+    SetTimeLimit = "setTimeLimit",
+    SetTimeRemaining = "setTimeRemaining",
 }
 
 // Step 3 - Define Action Interface to describe actionAction & payload if needed
@@ -142,6 +148,27 @@ export function incrementIndexAction() {
     }
 }
 
+export function setBonusTimeAction(bonusTime: number) {
+    return {
+        type: GameActionType.SetBonusTime,
+        payload: bonusTime
+    };
+}
+
+export function setTimeLimitAction(timeLimit: number) {
+    return {
+        type: GameActionType.SetTimeLimit,
+        payload: timeLimit
+    };
+}
+
+export function setTimeRemainingAction(time: number, addBonus: boolean) {
+    return {
+        type: GameActionType.SetTimeRemaining,
+        payload: time, addBonus
+    };
+}
+
 export function addUserAnswerAction(questionIndex: number, answerText: string, isCorrect: boolean):
     GameAction {
     const userAnswer: UserAnswerModel = {
@@ -179,7 +206,18 @@ export function GameReducer(
         case GameActionType.SetLives: 
             newState.lives = action.payload;
             break;
-        case GameActionType.SetNextQuestion: //full state managemnet for next question transition. TODO: does not handle improper calls gracfully
+        case GameActionType.SetBonusTime:
+            newState.bonusTime = action.payload;
+            break;
+        case GameActionType.SetTimeLimit:
+            newState.timeLimit = action.payload;
+            newState.timeRemaining = action.payload;
+            break;
+        case GameActionType.SetTimeRemaining:
+            newState.timeRemaining = action.payload.time + (action.payload.addBonus) ? newState.bonusTime : 0; //only adds bonus when addBonus === true
+            if (newState.timeRemaining! > newState.timeLimit!) newState.timeRemaining = newState.timeLimit; //time remaining can't exeed time limit.
+            break;
+        case GameActionType.SetNextQuestion: 
             if (!newState.isLastQuestion) {
                 newState.question = newState.game?.questions?.at(newState.questionIndex);
                 newState.questionIndex++;

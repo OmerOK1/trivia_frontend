@@ -9,6 +9,8 @@ import "./Routing.css"
 import GamePageMP from "../../Pages/GameLoopArea/Multiplayer/GamePageMP/GamePageMP";
 import GamePageSurvival from "../../Pages/GameLoopArea/Survival/GamePageSurvival/GamePageSurvival";
 import AddGameSurvival from "../../Pages/AddGame/AddGameSurvival";
+import GamePageTimeTrial from "../../Pages/GameLoopArea/TimeTrial/GamePageTimeTrial/GamePageTimeTrial";
+import AddGameTimerTrial from "../../Pages/AddGame/AddGameTimeTrial";
 
 function Routing(): JSX.Element {
     return (
@@ -19,11 +21,13 @@ function Routing(): JSX.Element {
                 <Route path="/signup" element={<SignUpPage />} />
                 <Route path="/multiplayersettings" element={<MultiPlayerSettings />} />
                 <Route path="/survivalsettings" element={<AddGameSurvival />} />
+                <Route path="/timetrialsettings" element={<AddGameTimerTrial />} />
                 <Route path="/signin" element={<SignInPage />} />
                 <Route path="/joingame" element={<SignInPage />} />
                 <Route path={"/game/singleplayer/*"} element={<GamePageSP />} />
                 <Route path={"/game/multiplayer/*"} element={<GamePageMP />} />
                 <Route path={"/game/survival/*"} element={<GamePageSurvival />} />
+                <Route path={"/game/timetrial/*"} element={<GamePageTimeTrial />} />
             </Routes>
         </div>
     );

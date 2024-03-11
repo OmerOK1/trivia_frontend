@@ -6,7 +6,7 @@ import { GameModel } from '../../../Models/GameModel';
 import { useEffect, useState } from 'react';
 import { addGameApi } from '../../../WebAPI/UserApi';
 import store from '../../../Redux/Store';
-import { setGameAction, setMaxLivesAction, setThisPlayerAction } from '../../../Redux/GameState';
+import { setBonusTimeAction, setGameAction, setMaxLivesAction, setThisPlayerAction, setTimeLimitAction } from '../../../Redux/GameState';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
@@ -22,8 +22,8 @@ import { GameMode } from '../../../Models/Enums/GameMode';
 import { ExpandedGameFormModel } from '../../../Models/SurvivalGameFormModel';
 
 
-function AddGameSurvival() {
-    const nextPage = "/game/survival"; 
+function AddGameTimerTrial() {
+    const nextPage = "/game/timetrial"; 
     const navigate = useNavigate();
     const [inTimeout, setInTimeout] = useState(false);
     const [domain, setDomain] = useState('http://'+globals.getHost+':3000');
@@ -37,10 +37,12 @@ function AddGameSurvival() {
             yup.string().notRequired(),
         category:
             yup.string().required("please enter a valid category"),
-            difficulty:
-            yup.string().default("ANY"),
-        lives:
-            yup.number().integer("Can't use non-whole numbers").min(1).max(5).required("Lives can only be between 1-5"),
+        difficulty:
+            yup.string().required("a game difficulty must be chosen"),
+        answerTimeLimit:
+            yup.number(),
+        bonusTime:
+            yup.number(),
         layout:
             yup.string().default("COMING_SOON")
     });
@@ -61,13 +63,13 @@ function AddGameSurvival() {
             difficulty: game.difficulty,
             layout: game.layout,
             isMultiplayer: false,
-            gameMode: GameMode.SURVIVAL} as GameModel;
-        console.log("sent game difficulty: " + toServer.difficulty);
+            gameMode: GameMode.TIME_TRIAL} as GameModel;
 
         await addGameApi(toServer).then((res) => {
             res.data.url = domain + '/' + res.data.url;
             store.dispatch(setGameAction(res.data));
-            store.dispatch(setMaxLivesAction(game.lives!))
+            store.dispatch(setBonusTimeAction(game.bonusTime!));
+            store.dispatch(setTimeLimitAction(game.answerTimeLimit!));
             console.log(store.getState().gameReducer);
             navigate(nextPage);
         }).catch((err)=>console.log("addGame promise broken: " + err));
@@ -85,7 +87,7 @@ function AddGameSurvival() {
                         alignItems: 'center',
                     }}>
                     <Typography component="h1" variant="h5" marginBottom={8}>
-                        Game Settings - Survival
+                        Game Settings - Time Trial
                     </Typography>
 
                     <Box component="form" onSubmit={handleSubmit(addGame)} noValidate sx={{ mt: 1 }}>
@@ -99,21 +101,30 @@ function AddGameSurvival() {
                             {...register("title")}
                         />
 
-                        <TextField sx={{ mt: 2 }}
-                            {...register("lives")}
-                            fullWidth
-                            defaultValue={3}
-                            error={!!errors.lives}
-                            helperText={errors.lives?.message}
-                            id="lives-field"
-                            label="Number of Lives"
-                            type="number"
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                            variant="outlined"
-                            color="secondary"
-                        />
+                        <FormControl sx={{ mt: 2 }} fullWidth>
+                            <TextField
+                                color="success" variant="outlined" label="Starting Time"
+                                select SelectProps={{ native: true }} {...register("answerTimeLimit")} defaultValue={60}
+                                inputProps={{ name: 'answerTimeLimit', id: 'answer-time-limit' }}>
+                                <option value={180}>3 minutes</option>
+                                <option value={120}>2 minutes</option>
+                                <option value={60}>1 minute</option>
+                                <option value={30}>30 seconds</option>
+                            </TextField>
+                        </FormControl>
+
+                        <FormControl sx={{ mt: 2 }} fullWidth>
+                            <TextField
+                                color="success" variant="outlined" label="success time bonus"
+                                select SelectProps={{ native: true }} {...register("bonusTime")} defaultValue={5}
+                                inputProps={{ name: 'bonusTime', id: 'bonus-time' }}>
+                                <option value={20}>20 seconds</option>
+                                <option value={10}>10 seconds</option>
+                                <option value={5}>5 seconds</option>
+                                <option value={3}>3 seconds</option>
+                                <option value={0}>no bonus</option>
+                            </TextField>
+                        </FormControl>
 
                         <FormControl sx={{ mt: 2 }} fullWidth>
                             <TextField
@@ -124,6 +135,19 @@ function AddGameSurvival() {
                                 { }
                                 {Object.entries(Category).map(([categoryKey, categoryValue]) => (
                                     <option key={categoryKey} value={categoryKey}>{categoryValue}</option>
+                                ))}
+                            </TextField>
+                        </FormControl>
+
+                        <FormControl sx={{ mt: 2 }} fullWidth >
+                            <TextField
+                                color="success" variant="outlined" label="Difficulty"
+                                {...register("difficulty")} defaultValue={"easy"} select SelectProps={{ native: true }}
+                                error={!!errors.difficulty} helperText={errors.difficulty?.message}
+                            >
+                                { }
+                                {Object.entries(Difficulty).map(([key, val]) => (
+                                    <option key={key} value={key}>{val}</option>
                                 ))}
                             </TextField>
                         </FormControl>
@@ -150,4 +174,4 @@ function AddGameSurvival() {
         </Container >
     );
 }
-export default AddGameSurvival;
+export default AddGameTimerTrial;
