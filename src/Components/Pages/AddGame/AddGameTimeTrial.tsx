@@ -19,7 +19,7 @@ import { Category } from '../../../Models/Enums/Category';
 import { LayoutEnum } from '../../../Models/Enums/LayoutEnum';
 import globals from '../../../Services/Globals';
 import { GameMode } from '../../../Models/Enums/GameMode';
-import { ExpandedGameFormModel } from '../../../Models/SurvivalGameFormModel';
+import { ExpandedGameFormModel } from '../../../Models/ExpandedGameFormModel';
 
 
 function AddGameTimerTrial() {
