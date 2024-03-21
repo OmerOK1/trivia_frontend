@@ -10,12 +10,13 @@ import TableBody from "@mui/material/TableBody";
 import Box from "@mui/material/Box";
 import CustomLink from "../../../../Utils/CustomLink/CustomLink";
 import CheckSharpIcon from '@mui/icons-material/CheckSharp';
+import { UserAnswerModel } from "../../../../../Models/UserAnswerModel";
 
 function GameReview() {
   const length = store.getState().gameReducer.questionIndex;
   const game = store.getState().gameReducer.game;
   const userAnswers = store.getState().gameReducer.userAnswers;
-  const [correctAnswers] = useState(userAnswers.filter((answer) => answer.isCorrect));
+  const correctAnswers : UserAnswerModel[] = userAnswers.filter((answer) => answer.isCorrect);
   console.log(length); 
   const answersTableLoop = Array.from({ length }, (_, index) => index);
 

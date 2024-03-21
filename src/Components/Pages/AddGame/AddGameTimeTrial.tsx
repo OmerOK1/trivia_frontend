@@ -118,6 +118,7 @@ function AddGameTimerTrial() {
                                 color="success" variant="outlined" label="success time bonus"
                                 select SelectProps={{ native: true }} {...register("bonusTime")} defaultValue={5}
                                 inputProps={{ name: 'bonusTime', id: 'bonus-time' }}>
+                                <option value={30}>30 seconds</option>
                                 <option value={20}>20 seconds</option>
                                 <option value={10}>10 seconds</option>
                                 <option value={5}>5 seconds</option>

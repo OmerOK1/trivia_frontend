@@ -226,7 +226,7 @@ export function GameReducer(
             break;
         case GameActionType.AddUserAnswer:
             newState.userAnswers.push(action.payload);
-            console.log(newState.userAnswers);
+            console.log("on add answers: " + JSON.stringify(newState.userAnswers));
             break;
         case GameActionType.CheckLastQuestion:
             newState.isLastQuestion = (newState.questionIndex === newState.game?.questionsPerRound);

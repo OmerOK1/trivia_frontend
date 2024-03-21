@@ -9,7 +9,6 @@ function GamePageTimeTrial(): JSX.Element {
         <div className="game-page">
             {title !== undefined && <Typography variant='h3' sx={{cursor: 'pointer'}} >{title}</Typography>}
             <GameRoutingTimeTrial />
-            {/* add time limit here */}
             <Outlet />
         </div>
     )

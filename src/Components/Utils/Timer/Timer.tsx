@@ -3,20 +3,18 @@ import LinearProgress from '@mui/material/LinearProgress';
 import Box from '@mui/material/Box';
 
 interface TimerProps {
-    key: number;
+    genericKey: number;
   timeLimit: number;
   onTimeout: () => void;
 }
 
 
-const Timer: React.FC<TimerProps> = ({ key, timeLimit, onTimeout }) => {
+export function Timer({ genericKey, timeLimit, onTimeout } : TimerProps) {
     const [progress, setProgress] = useState(100);
   
     useEffect(() => {
-      const interval = 500; // Adjust the interval for smoother animation
+      const interval = 100; // Adjust the interval for smoother animation
       const steps = timeLimit * (1000 / interval);
-  
-      setProgress(100); // Reset progress when timeLimit changes
   
       const timer = setInterval(() => {
         setProgress((prev) => {
@@ -29,15 +27,15 @@ const Timer: React.FC<TimerProps> = ({ key, timeLimit, onTimeout }) => {
         });
       }, interval);
   
-      return () => {
+      return () => { //lifetime event for end of timer rendering.
         clearInterval(timer);
       };
-    }, [key]);
+    }, [genericKey]);
   
     // Reset progress only when timeLimit changes
     useEffect(() => {
       setProgress(100);
-    }, [key]);
+    }, [genericKey]);
   
     return (
       <Box sx={{ width: '100%' }}>

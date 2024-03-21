@@ -31,7 +31,7 @@ function GameWelcome(): JSX.Element {
         case GameMode.CLASSIC: 
         setNextPage("/game/singleplayer/question")
         break;
-        case GameMode.TIME_TRIAL: setNextPage("")
+        case GameMode.TIME_TRIAL: setNextPage("/game/timetrial/question")
         break;
         case GameMode.SURVIVAL: setNextPage("/game/survival/question")
         }

@@ -97,7 +97,7 @@ export function QuestionPage() {
         }));
         setTimeout(() => {
             setInTimeout(false);
-            handleNextQuestion();
+            handleNextQuestion(); //TODO - test if time over to finish.
         }, 1500);
     };
     
@@ -118,7 +118,7 @@ export function QuestionPage() {
                     ))}
                 </Grid>
             </Box>
-            {(answered === false) && (!timeOver) && <Timer key={questionIndex} timeLimit={getTimeLimit!} onTimeout={handleTimeOver} />}
+            {(answered === false) && (!timeOver) && <Timer genericKey={questionIndex} timeLimit={getTimeLimit!} onTimeout={handleTimeOver} />}
             <Box width="20vw" >
             
                 {answered === true && (isLast ? 
