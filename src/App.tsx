@@ -13,7 +13,7 @@ function App() {
   return ( 
     <div>
       <CssBaseline />
-      <Container className='mui' id="mui-parent-div" disableGutters maxWidth={false} sx={{ bgcolor: '#cfe8fc', height: '100vh', textAlign: 'center' }}>
+      <Container className='mui' id="mui-parent-div" disableGutters maxWidth={false} sx={{ bgcolor: '#cfe8fc', minHeight: '100vh', textAlign: 'center' }}>
         <Box onClick={() => navigate("/")} bgcolor={'#424242'} color={'azure'} sx={{ textAlign: 'center' }}>
           <Typography variant='h1' sx={{cursor: 'pointer'}} >Trivia Mania</Typography>
         </Box>

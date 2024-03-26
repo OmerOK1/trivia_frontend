@@ -22,9 +22,9 @@ function GameReview() {
 
   return (
     <div>
-      <TableContainer component={Paper} >
+      <TableContainer sx={{ maxHeight: '65vh' }} component={Paper} >
         <p>Total correct answers: {correctAnswers.length} / {length}</p>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <Table sx={{ minWidth: 350 }} aria-label="simple table">
           <TableHead>
             <TableRow>
               <TableCell align="right">#</TableCell>
